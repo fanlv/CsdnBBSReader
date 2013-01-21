@@ -102,8 +102,6 @@
 
 #pragma mark - 解析获取的HTML数据
 
-//--------http://bbs.csdn.net/forums/DotNET
-//--------http://bbs.csdn.net/forums/DotNET.atom
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     // Use when fetching text data
