@@ -139,7 +139,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="YUD-jy-BTW">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="a1t-O6-5Hp"/>
+                        <barButtonItem key="rightBarButtonItem" title="回复" id="a1t-O6-5Hp"/>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qFt-aW-778" userLabel="First Responder" sceneMemberID="firstResponder"/>
