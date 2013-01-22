@@ -223,6 +223,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E506635416AEB74500328205 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E51D32C516AA8A920007DCBE /* Article.h */,
+				E51D32C616AA8A920007DCBE /* Article.m */,
+				E5A097CC16ABF31F007E1600 /* Reply.h */,
+				E5A097CD16ABF31F007E1600 /* Reply.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		E506635616AEB75F00328205 /* HelpClass */ = {
+			isa = PBXGroup;
+			children = (
+				E5A097D216AC23E2007E1600 /* AsyncImageView */,
+				E5EA852716A2CA7900183640 /* SGInfoAlert */,
+				E5EA84CE16A2BA1400183640 /* CustomPullToRefresh */,
+				E5F8B300169E6F67006CFABD /* HTMLParser */,
+				E5587E89169D1944002AA6B8 /* RegexKitLite */,
+				E5956840169C00C600C37832 /* ASIHTTPRequest */,
+			);
+			name = HelpClass;
+			sourceTree = "<group>";
+		};
 		E5587E89169D1944002AA6B8 /* RegexKitLite */ = {
 			isa = PBXGroup;
 			children = (
@@ -268,19 +292,11 @@
 		E595681D169BE86D00C37832 /* CsdnReader */ = {
 			isa = PBXGroup;
 			children = (
-				E5A097D216AC23E2007E1600 /* AsyncImageView */,
-				E5EA852716A2CA7900183640 /* SGInfoAlert */,
-				E5EA84CE16A2BA1400183640 /* CustomPullToRefresh */,
-				E5F8B300169E6F67006CFABD /* HTMLParser */,
-				E5587E89169D1944002AA6B8 /* RegexKitLite */,
-				E5956840169C00C600C37832 /* ASIHTTPRequest */,
+				E506635616AEB75F00328205 /* HelpClass */,
+				E506635416AEB74500328205 /* Model */,
 				E595682F169BE86D00C37832 /* MainStoryboard.storyboard */,
 				E5996B9816AA73AD005F317D /* ConstParameter.h */,
 				E5996B9916AA73AD005F317D /* ConstParameter.m */,
-				E51D32C516AA8A920007DCBE /* Article.h */,
-				E51D32C616AA8A920007DCBE /* Article.m */,
-				E5A097CC16ABF31F007E1600 /* Reply.h */,
-				E5A097CD16ABF31F007E1600 /* Reply.m */,
 				E59864F016A148CD000BC5B4 /* ArticleViewController.h */,
 				E59864F116A148CD000BC5B4 /* ArticleViewController.m */,
 				E543C59916A98650007398C1 /* ArticleDetailViewController.h */,
