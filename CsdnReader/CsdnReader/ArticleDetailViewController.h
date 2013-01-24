@@ -11,6 +11,7 @@
 
 @interface ArticleDetailViewController : UITableViewController
 
+
 @property (nonatomic,strong) Article *article;
 
 @end

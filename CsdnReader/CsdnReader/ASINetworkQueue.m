@@ -130,6 +130,7 @@
 // Only add ASIHTTPRequests to this queue!!
 - (void)addOperation:(NSOperation *)operation
 {
+    //NSLog(@"12321312312");
 	if (![operation isKindOfClass:[ASIHTTPRequest class]]) {
 		[NSException raise:@"AttemptToAddInvalidRequest" format:@"Attempted to add an object that was not an ASIHTTPRequest to an ASINetworkQueue"];
 	}

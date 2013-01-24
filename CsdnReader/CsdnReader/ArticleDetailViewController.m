@@ -11,12 +11,15 @@
 #import "HTMLParser.h"
 #import "SGInfoAlert.h"
 #import "CustomPullToRefresh.h"
-#import "ConstParameter.h"
+#import "ConstParameterAndMethod.h"
 #import "Reply.h"
 #import "AsyncImageView.h"
 
 
-@interface ArticleDetailViewController () <CustomPullToRefreshDelegate,UIWebViewDelegate>
+@interface ArticleDetailViewController () <CustomPullToRefreshDelegate>
+{
+    NSTimer *showTimer;
+}
 
 @property (nonatomic,strong) CustomPullToRefresh *coustomPullToRefresh;
 @property (nonatomic) NSInteger page;
@@ -48,7 +51,7 @@
     [articleTitle appendString:@"分"];
     [articleTitle appendString:@"]"];
     
-    CGFloat tableHeaderHeight = [ConstParameter getArticleTitleHeight:articleTitle
+    CGFloat tableHeaderHeight = [ConstParameterAndMethod getArticleTitleHeight:articleTitle
                                                             withWidth:self.tableView.frame.size.width
                                                               andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
     //创建一个视图（_headerView）
@@ -83,21 +86,15 @@
 {
     
     _article = article;
-    
-    [self setDataSourceFromWebSite:article.completeLink];
+    [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:article.completeLink andSetDelegate:self];
     
 }
 
 
 #pragma mark - 解析获取的HTML数据
 
-- (void)setDataSourceFromWebSite:(NSString *)WebSite
-{
-    NSURL *url2 = [NSURL URLWithString:WebSite];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url2];
-    [request setDelegate:self];
-    [request startAsynchronous];
-}
+
+
 
 
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -239,7 +236,6 @@
     [SGInfoAlert showInfo: [NSString stringWithFormat:@"网络异常: %@",errorDetail]
                   bgColor:[[UIColor blackColor] CGColor]
                    inView:self.view vertical:0.8];
-    [coustomPullToRefresh endRefresh];
     [self.coustomPullToRefresh endRefresh];
 }
 
@@ -276,13 +272,12 @@
                                           reuseIdentifier:PlaceholderCellIdentifier];
             cell.detailTextLabel.textAlignment = UITextAlignmentCenter;
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
+        }        
         
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"数据加载中…."];
-		
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"数据加载中…"];		
 		return cell; //记录为0则直接返回，只显示数据加载中…
     }
-    
+    //NSLog(@"%f",self.pv.progress);
     
     
     static NSString *CellIdentifier = @"b";
@@ -311,16 +306,14 @@
         dateLabel.text = [NSString stringWithFormat:@"回复于：%@",reply.date];
         
     }
-    float height = [ConstParameter getArticleTitleHeight:reply.rawContents
+    float height = [ConstParameterAndMethod getArticleTitleHeight:reply.rawContents
                                                withWidth:tableView.frame.size.width - 10
                                                  andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
     CGRect frame = webView.frame;
     frame.size.height = height;
     webView.frame = frame;
-    webView.delegate = self;
-
+    //webView.delegate = self;
     [webView loadHTMLString:reply.rawContents baseURL:nil];
-
     //webView.sizeThatFits = YES;
     //webView.scrollView.scrollEnabled = NO;
     
@@ -335,8 +328,8 @@
         reply.imageView = asyncImage;
     }
     [cell.contentView addSubview:reply.imageView];
-    [tableView reloadRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
-                     withRowAnimation: UITableViewRowAnimationNone];
+//    [tableView reloadRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
+//                     withRowAnimation: UITableViewRowAnimationNone];
     
     
     return cell;
@@ -387,13 +380,20 @@
 - (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    Reply *reply = [self.replyLists objectAtIndex:indexPath.row];
+    if (self.replyLists.count > 0)
+    {
+        
+        Reply *reply = [self.replyLists objectAtIndex:indexPath.row];
+        float height = [ConstParameterAndMethod getArticleTitleHeight:reply.rawContents
+                                                   withWidth:tableView.frame.size.width - 10
+                                                     andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
+                return  height  + 60;
+    }
     
-    float height = [ConstParameter getArticleTitleHeight:reply.rawContents
-                                               withWidth:tableView.frame.size.width - 10
-                                                 andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
-    
-    return  height  + 60;
+    else
+    {
+        return 60;
+    }
 }
 
 
@@ -406,17 +406,24 @@
         page += 1;
         NSMutableString *tmp = [[NSMutableString alloc] initWithString:self.article.completeLink];
         [tmp appendString:[NSString stringWithFormat:@"?page=%d",page]];
-        [self performSelectorInBackground:@selector(setDataSourceFromWebSite:) withObject:tmp];
+        //[self performSelectorInBackground:@selector(setDataSourceFromWebSite:) withObject:tmp];
+        
+        [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:tmp andSetDelegate:self];
+
     }
     if (direction == MSRefreshDirectionTop)
     {
         page = 1;
-        [self performSelectorInBackground:@selector(setDataSourceFromWebSite:) withObject:self.article.completeLink];
+        
+        [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:self.article.completeLink andSetDelegate:self];
     }
     
 }
 
 
+- (void)setDataSourceFromWebSite:(NSString *)webSite
+{
+}
 
 
 @end

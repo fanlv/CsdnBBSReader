@@ -27,7 +27,15 @@
 //#define ARTICLE_LAST_UPDATE   @"lastUpDate"
 //#define ARTICLE_CATEGORY      @"category"
 
-@interface ConstParameter : NSObject
+@interface ConstParameterAndMethod : NSObject
+
++ (void)setDataSourceWithGetWebSiteHtmlWithOutCookie:(NSString *)webSite andSetDelegate:(id)delegate;
+
++ (void)loginCsdnBbsWithUserName:(NSString *)userName andPassWord:(NSString *)passWord andSetDelegate:(id)delegate;
+
+
++ (void)setDataSourceWithWebSiteHtmlWithCookie:(NSString *)webSite andSetDelegate:(id)delegate;
+
 
 + (float)getArticleTitleHeight:(NSString *)content withWidth:(CGFloat)contentWidth andFont:(UIFont*)font;
 

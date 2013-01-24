@@ -12,7 +12,7 @@
 #import "HTMLParser.h"
 #import "ArticleTitleCell.h"
 #import "SGInfoAlert.h"
-#import "ConstParameter.h"
+#import "ConstParameterAndMethod.h"
 #import "ArticleDetailViewController.h"
 #import "Article.h"
 
@@ -56,7 +56,8 @@
     //[spinner stopAnimating];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     [self.coustomPullToRefresh startRefresh];
-    [self setDataSourceFromWebSite:urlWithOutPage];
+    [ConstParameterAndMethod setDataSourceWithGetWebSiteHtmlWithOutCookie:urlWithOutPage andSetDelegate:self];
+
 }
 
 
@@ -86,17 +87,9 @@
     {
         urlWithOutPage = CSDN_BBS_OTHER_URL;
     }
-    [self setDataSourceFromWebSite:urlWithOutPage];
-    
+    [ConstParameterAndMethod setDataSourceWithGetWebSiteHtmlWithOutCookie:urlWithOutPage andSetDelegate:self];
 }
 
-- (void)setDataSourceFromWebSite:(NSString *)WebSite
-{
-    NSURL *url2 = [NSURL URLWithString:WebSite];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url2];
-    [request setDelegate:self];
-    [request startAsynchronous];
-}
 
 
 
@@ -317,7 +310,7 @@
     //------显示有多少回复
     theCell.replyCountLabel.text = [NSString stringWithFormat:@"%@回应",article.replycount];
     //------显示发布时间和发布人
-    NSString *miunesTime = [ConstParameter showMinusTimeWithNoYearDateString:article.date];
+    NSString *miunesTime = [ConstParameterAndMethod showMinusTimeWithNoYearDateString:article.date];
     theCell.authorAndDateLabel.text = [NSString stringWithFormat:@"%@  %@",article.author,miunesTime];
     
     
@@ -326,13 +319,18 @@
 
 - (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Article *article = [self.articleLists objectAtIndex:indexPath.row];
-    
-    NSString *articleTitle = [NSString stringWithFormat:@"%@   [%@]",article.title,article.category];
-    float height = [ConstParameter getArticleTitleHeight:articleTitle
-                                              withWidth:tableView.frame.size.width //- 5
-                                                andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
-   
+    float height = 0;
+    if (self.articleLists.count > 0)
+    {
+        
+        
+        Article *article = [self.articleLists objectAtIndex:indexPath.row];
+        
+        NSString *articleTitle = [NSString stringWithFormat:@"%@   [%@]",article.title,article.category];
+        height = [ConstParameterAndMethod getArticleTitleHeight:articleTitle
+                                                   withWidth:tableView.frame.size.width //- 5
+                                                     andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
+    }
     
     if (height < 45)
         return 60;
@@ -387,13 +385,13 @@
     [spinner startAnimating];
     //[spinner stopAnimating];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
-    //[self.coustomPullToRefresh startRefresh];    
-    [self setDataSourceFromWebSite:webSiteUrl];
+    //[self.coustomPullToRefresh startRefresh];
+    [ConstParameterAndMethod setDataSourceWithGetWebSiteHtmlWithOutCookie:webSiteUrl andSetDelegate:self];
 }
 
 
 
-- (void)viewDidUnload {
+- (void)viewDidUnload { 
     [self setTableView:nil];
     [self setArticleTitleCell:nil];
     [super viewDidUnload];

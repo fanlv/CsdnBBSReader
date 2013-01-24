@@ -7,7 +7,7 @@
 //
 
 #import "Article.h"
-#import "ConstParameter.h"
+#import "ConstParameterAndMethod.h"
 
 @implementation Article
 

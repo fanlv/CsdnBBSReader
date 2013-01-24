@@ -80,10 +80,10 @@ static void addRoundedRectToPath(CGContextRef context, CGRect rect,
 // 渐变消失
 - (void)fadeAway{
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:3.5f];
+    [UIView setAnimationDuration:2.5f];
     self.alpha = .0;
     [UIView commitAnimations];
-    [self performSelector:@selector(remove) withObject:nil afterDelay:3.5f];
+    [self performSelector:@selector(remove) withObject:nil afterDelay:2.5f];
 }
 
 + (void)showInfo:(NSString *)info 
