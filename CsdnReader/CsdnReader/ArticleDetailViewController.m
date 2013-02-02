@@ -14,12 +14,14 @@
 #import "ConstParameterAndMethod.h"
 #import "Reply.h"
 #import "AsyncImageView.h"
+#import "ReplyViewController.h"
+
+
 
 
 @interface ArticleDetailViewController () <CustomPullToRefreshDelegate>
-{
-    NSTimer *showTimer;
-}
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *replyButton;
 
 @property (nonatomic,strong) CustomPullToRefresh *coustomPullToRefresh;
 @property (nonatomic) NSInteger page;
@@ -34,12 +36,31 @@
 @synthesize page;
 @synthesize replyLists;
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    if (![ConstParameterAndMethod isUserLogin])
+    {
+        self.replyButton.enabled = NO;
+        self.replyButton.title = @"请先登录";
+
+    }
+    else
+    {
+        self.replyButton.enabled = YES;
+        self.replyButton.title = @"回复";
+    }
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+
+    
     page = 1;
     coustomPullToRefresh = [[CustomPullToRefresh alloc] initWithScrollView:self.tableView delegate:self];
-    
+
     
     self.title = self.article.title;
     NSMutableString *articleTitle = [[NSMutableString alloc] initWithString:self.article.title];
@@ -52,8 +73,8 @@
     [articleTitle appendString:@"]"];
     
     CGFloat tableHeaderHeight = [ConstParameterAndMethod getArticleTitleHeight:articleTitle
-                                                            withWidth:self.tableView.frame.size.width
-                                                              andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
+                                                                     withWidth:self.tableView.frame.size.width
+                                                                       andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
     //创建一个视图（_headerView）
     UIView *tableViewHeader= [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, tableHeaderHeight)];
     //tableViewHeader.backgroundColor = [UIColor colorWithRed:1.0 green:233/255.0 blue:1.0 alpha:1.0];
@@ -90,6 +111,39 @@
     
 }
 
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"Reply"])
+    {
+        ReplyViewController *replyViewController = [segue destinationViewController];
+        NSString *topicId = [self.article.link stringByReplacingOccurrencesOfString:@"/topics/" withString:@""];
+        [replyViewController setTopicId:topicId];
+        
+    }
+}
+
+//-----------------在IOS6下才有用
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    if ([identifier isEqualToString:@"Reply"])
+    {
+        if (![ConstParameterAndMethod isUserLogin])
+        {
+            //创建对话框
+            UIAlertView * alertA= [[UIAlertView alloc] initWithTitle:@"" message:@"请先登录帐号。谢谢。" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            alertA.delegate = self;
+            //将这个UIAlerView 显示出来
+            [alertA show];
+            return NO;
+        }
+        else
+            return YES;
+        
+    }
+    // Allow all other segues
+    return YES;
+}
 
 #pragma mark - 解析获取的HTML数据
 
@@ -210,6 +264,7 @@
             
             //NSLog(@"%@",reply.content);
             
+            
             [replyLisMutableArray addObject:reply];
         }
     }
@@ -261,7 +316,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if (self.replyLists.count == 0 && indexPath.row == 0)
 	{
         NSString *PlaceholderCellIdentifier = @"PlaceholderCell";
@@ -272,9 +326,9 @@
                                           reuseIdentifier:PlaceholderCellIdentifier];
             cell.detailTextLabel.textAlignment = UITextAlignmentCenter;
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }        
+        }
         
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"数据加载中…"];		
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"数据加载中…"];
 		return cell; //记录为0则直接返回，只显示数据加载中…
     }
     //NSLog(@"%f",self.pv.progress);
@@ -287,6 +341,16 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         //cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    else {
+        AsyncImageView* oldImage = (AsyncImageView*)
+        [cell.contentView viewWithTag:999];
+        [oldImage removeFromSuperview];
+    }
+    
+    
+    
+    
+    
     
     Reply *reply = [self.replyLists objectAtIndex:indexPath.row];
     UILabel *nameLabel = (UILabel *)[cell viewWithTag:998];
@@ -307,8 +371,8 @@
         
     }
     float height = [ConstParameterAndMethod getArticleTitleHeight:reply.rawContents
-                                               withWidth:tableView.frame.size.width - 10
-                                                 andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
+                                                        withWidth:tableView.frame.size.width - 10
+                                                          andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
     CGRect frame = webView.frame;
     frame.size.height = height;
     webView.frame = frame;
@@ -327,9 +391,33 @@
         [asyncImage loadImageFromURL:url2];
         reply.imageView = asyncImage;
     }
+    
     [cell.contentView addSubview:reply.imageView];
-//    [tableView reloadRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
-//                     withRowAnimation: UITableViewRowAnimationNone];
+    //    [tableView reloadRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
+    //                     withRowAnimation: UITableViewRowAnimationNone];
+    
+    
+    
+    int iii = 1;
+    while (iii < 5 && indexPath.row +iii < replyLists.count )
+    {
+        Reply *reply = [self.replyLists objectAtIndex:indexPath.row + iii];
+        if (reply.imageView == nil)
+        {
+            CGRect frame = CGRectMake(5, 5, 30, 30);
+            AsyncImageView* asyncImage = [[AsyncImageView alloc] initWithFrame:frame];
+            asyncImage.tag = 999;
+            NSURL *url2 = [NSURL URLWithString:reply.profileImageUrl];
+            [asyncImage loadImageFromURL:url2];
+            reply.imageView = asyncImage;
+            // NSLog(@"indexPath.row +i =%d , i = %d",(indexPath.row +iii),iii);
+        }
+        iii ++;
+    }
+    
+    
+    
+    
     
     
     return cell;
@@ -379,15 +467,15 @@
 
 - (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     if (self.replyLists.count > 0)
     {
         
         Reply *reply = [self.replyLists objectAtIndex:indexPath.row];
         float height = [ConstParameterAndMethod getArticleTitleHeight:reply.rawContents
-                                                   withWidth:tableView.frame.size.width - 10
-                                                     andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
-                return  height  + 60;
+                                                            withWidth:tableView.frame.size.width - 10
+                                                              andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
+        return  height  + 60;
     }
     
     else
@@ -403,29 +491,32 @@
 {
     if (direction == MSRefreshDirectionBottom)
     {
+        NSLog(@"%d",self.replyLists.count);
+        if (((self.replyLists.count - 1) % 100) != 0)
+        {
+            [coustomPullToRefresh endRefresh];
+            return;
+        }
         page += 1;
         NSMutableString *tmp = [[NSMutableString alloc] initWithString:self.article.completeLink];
-        [tmp appendString:[NSString stringWithFormat:@"?page=%d",page]];
-        //[self performSelectorInBackground:@selector(setDataSourceFromWebSite:) withObject:tmp];
-        
+        [tmp appendString:[NSString stringWithFormat:@"?page=%d",page]];        
         [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:tmp andSetDelegate:self];
-
+        
     }
     if (direction == MSRefreshDirectionTop)
     {
         page = 1;
-        
         [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:self.article.completeLink andSetDelegate:self];
     }
     
 }
 
 
-- (void)setDataSourceFromWebSite:(NSString *)webSite
-{
+
+- (void)viewDidUnload {
+    [self setReplyButton:nil];
+    [super viewDidUnload];
 }
-
-
 @end
 
 
@@ -475,14 +566,3 @@
 //</tr>
 //
 //</table>
-
-
-
-
-
-
-
-
-
-
-

@@ -13,49 +13,71 @@
 #import "ASIFormDataRequest.h"
 #import "JSONKit.h"
 #import "SVProgressHUD.h"
+#import "JYTextField.h"
 
 @interface LoginViewController ()<UITextFieldDelegate,UIWebViewDelegate>
-
-@property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
-@property (weak, nonatomic) IBOutlet UITextField *passWordTextField;
-
+{
+    JYTextField *userNameTextField;
+	JYTextField *passWordTextField;
+}
 @end
 
 @implementation LoginViewController
-@synthesize userNameTextField = _userNameTextField;
-@synthesize passWordTextField = _passWordTextField;
+
 
 - (void)viewDidLoad
 {
   
     [super viewDidLoad];
     
-    _userNameTextField.delegate = self;
-    _passWordTextField.delegate = self;
+    userNameTextField = [[JYTextField alloc]initWithFrame:CGRectMake(80, 50, 180, 38)
+								  cornerRadio:5
+								  borderColor:RGB(166, 166, 166)
+								  borderWidth:2
+								   lightColor:RGB(55, 154, 255)
+									lightSize:8
+							 lightBorderColor:RGB(235, 235, 235)];
+	//[userNameTextField setClearButtonMode:UITextFieldViewModeWhileEditing];
+	[userNameTextField setPlaceholder:@"用户名"];
+	[self.view addSubview:userNameTextField];
+    
+	passWordTextField = [[JYTextField alloc]initWithFrame:CGRectMake(80, 115, 180, 38)
+								  cornerRadio:5
+								  borderColor:RGB(166, 166, 166)
+								  borderWidth:2
+								   lightColor:RGB(55, 154, 255)
+									lightSize:8
+							 lightBorderColor:RGB(235, 235, 235)];
+	//[passWordTextField setClearButtonMode:UITextFieldViewModeWhileEditing];
+	[passWordTextField setPlaceholder:@"密码"];
+	[passWordTextField setSecureTextEntry:YES];
+	[self.view addSubview:passWordTextField];
+    
+    userNameTextField.delegate = self;
+    passWordTextField.delegate = self;
+
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField endEditing:YES];
+    [textField resignFirstResponder];
     return NO;
 }
 
 
 - (void)viewDidUnload
 {
-    [self setUserNameTextField:nil];
-    [self setPassWordTextField:nil];
     [super viewDidUnload];
 }
 
 
 - (IBAction)login:(id)sender
 {
-    [SVProgressHUD showWithStatus:@"Doing Stuff"];
-    [self.userNameTextField resignFirstResponder ];
-    [self.passWordTextField resignFirstResponder];
-    [ConstParameterAndMethod loginCsdnBbsWithUserName:self.userNameTextField.text
-                                          andPassWord:self.passWordTextField.text
+    [SVProgressHUD showWithStatus:@"正在登录..."];
+    [userNameTextField resignFirstResponder ];
+    [passWordTextField resignFirstResponder];
+    [ConstParameterAndMethod loginCsdnBbsWithUserName:userNameTextField.text
+                                          andPassWord:passWordTextField.text
                                        andSetDelegate:self];
 }
 
@@ -75,7 +97,7 @@
     for (cookie in cookies)
     {
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        if ([cookie.name isEqualToString:@"UserName"] || [cookie.name isEqualToString:@"UserInfo"])
+        if ([cookie.name isEqualToString:COOKIE_USERNAME] || [cookie.name isEqualToString:COOKIE_USERINFO])
         {
             if (![cookie.value isEqualToString:@""])
             {
@@ -97,6 +119,10 @@
     if (statusString != nil && [statusString isEqualToString:@"1"])
     {
         [SVProgressHUD dismissWithSuccess:@"帐号登录成功！"];
+        //[self dismissModalViewControllerAnimated:YES];
+        //[self.navigationController popToViewController:viewController animated:YES];
+        //[self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
     }
     else
     {

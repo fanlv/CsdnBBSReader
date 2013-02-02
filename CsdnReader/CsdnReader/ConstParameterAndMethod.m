@@ -11,10 +11,102 @@
 
 @implementation ConstParameterAndMethod
 
-//https://passport.csdn.net/ajax/accounthandler.ashxt=log&u=f800051235&p=fan1234560&remember=0&f=h&rand=0.5
+
++ (void)RefreshTabBarController:(UITabBarController *)tabBarController
+{
+    UITabBarItem *tabBarItem1=[tabBarController.tabBar.items objectAtIndex:0];
+    UITabBarItem *tabBarItem2=[tabBarController.tabBar.items objectAtIndex:1];
+    UITabBarItem *tabBarItem3=[tabBarController.tabBar.items objectAtIndex:2];
+    
+        
+    tabBarItem1.title = [ConstParameterAndMethod FirstBBSBoard];
+    //tabBarItem1.image = [UIImage imageNamed:@"57.png"];
+    tabBarItem2.title = [ConstParameterAndMethod SecondBBSBoard];
+    tabBarItem3.title = [ConstParameterAndMethod ThridBBSBoard];
+}
 
 
-//f800051235&p=fan1234560&remember=0&f=http%3A%2F%2Fbbs.csdn.net%2F&rand=0.57829708292186
+
+
++ (NSString *)FirstBBSBoard
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSString *_firstBBSBoard = [ud objectForKey:FIRST_BBS_BOARD];
+    if (_firstBBSBoard ==nil)
+    {
+        _firstBBSBoard = @".NET";
+    }
+    
+    return _firstBBSBoard;
+}
+
++ (NSString *)SecondBBSBoard
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSString *_secondBBSBoard = [ud objectForKey:SECOND_BBS_BOARD];
+    if (_secondBBSBoard ==nil)
+    {
+        _secondBBSBoard = @"C/C++";
+    }
+    return _secondBBSBoard;
+}
+
++ (NSString *)ThridBBSBoard
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSString *_thridBBSBoard = [ud objectForKey:THRID_BBS_BOARD];
+    if (_thridBBSBoard ==nil)
+    {
+        _thridBBSBoard = @"扩充话题";
+    }
+    return _thridBBSBoard;
+}
+
+
+
++ (NSDictionary *)BBSUrlList
+{
+    static NSMutableDictionary *_bbsUrlList;
+    if (_bbsUrlList == nil)
+    {
+        _bbsUrlList = [[NSMutableDictionary alloc] init];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/DotNET"         forKey:@".NET"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Java"           forKey:@"JAVA"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/WebDevelop"     forKey:@"WEB开发"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/MSSQL"          forKey:@"MS-SQL"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/VC"             forKey:@"VC/MFC"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/VB"             forKey:@"VB"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Delphi"         forKey:@"Delphi"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Cpp"            forKey:@"C/C++"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/BCB"            forKey:@"C++ Builder"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/PowerBuilder"   forKey:@"PowerBuilder"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Oracle"         forKey:@"Oracle"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/OtherDatabase"  forKey:@"其他数据库开发"];        
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Embedded"       forKey:@"嵌入式开发"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Mobile"         forKey:@"移动平台"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/CAREER"         forKey:@"挨踢职涯"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Other"          forKey:@"扩充话题"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Support"        forKey:@"社区支持"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Windows"        forKey:@"Windows社区"];
+    }
+    return _bbsUrlList;
+}
+
+
++ (BOOL)isUserLogin
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSString *userName = [ud objectForKey:COOKIE_USERNAME];
+    NSString *userInfo = [ud objectForKey:COOKIE_USERINFO];
+    
+    if (userInfo.length == 0 || userName.length == 0)
+        return NO;
+    else
+        return YES;
+}
+
+
+
 
 + (void)loginCsdnBbsWithUserName:(NSString *)userName andPassWord:(NSString *)passWord andSetDelegate:(id)delegate
 {
@@ -39,49 +131,36 @@
     [request startAsynchronous];
 }
 
-
-
-//zHqspPpOZvQ1oMXDZJPXb2Z6CENYMdp3FW2kw8GJxkQmszJyoAS3s6pLikmKaj0xEboVlgwiHNWIKtJ3fWhuwrSn352uVfiKyDhHWYmdmzo%2bcBIo9NvYYweRm0A2Toy1EgJ9sja2C2OzwgggFT4nPw%3d%3d
 + (void)setDataSourceWithWebSiteHtmlWithCookie:(NSString *)webSite andSetDelegate:(id)delegate
-{
-    
-    
+{    
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSString *userName = [ud objectForKey:@"UserName"];
-    NSString *userInfo = [ud objectForKey:@"UserInfo"];
+    NSString *userName = [ud objectForKey:COOKIE_USERNAME];
+    NSString *userInfo = [ud objectForKey:COOKIE_USERINFO];
 
     if (userInfo == nil || userName == nil)
     {
         userName = @"";
         userInfo = @"";
     }
-    
-    
-    
+        
     NSDictionary *properties2 = [[NSMutableDictionary alloc] init];
-    [properties2 setValue:@"UserName"  forKey:NSHTTPCookieName];
+    [properties2 setValue:COOKIE_USERNAME  forKey:NSHTTPCookieName];
     [properties2 setValue:userName forKey:NSHTTPCookieValue];
     [properties2 setValue:@".csdn.net" forKey:NSHTTPCookieDomain];
     [properties2 setValue:@"/" forKey:NSHTTPCookiePath];
     NSHTTPCookie *cookie2 = [[NSHTTPCookie alloc] initWithProperties:properties2];
-    
-    
-    
+        
     NSDictionary *properties3 = [[NSMutableDictionary alloc] init];
-    [properties3 setValue:@"UserInfo"  forKey:NSHTTPCookieName ];
+    [properties3 setValue:COOKIE_USERINFO  forKey:NSHTTPCookieName ];
     [properties3 setValue:userInfo forKey:NSHTTPCookieValue];
     [properties3 setValue:@".csdn.net" forKey:NSHTTPCookieDomain];
     [properties3 setValue:@"/" forKey:NSHTTPCookiePath];
     NSHTTPCookie *cookie3 = [[NSHTTPCookie alloc] initWithProperties:properties3];
     
-    
-    
-    
     //This url will return the value of the 'ASIHTTPRequestTestCookie' cookie
     NSURL *url = [NSURL URLWithString:webSite];
     ASIHTTPRequest  *request = [ASIHTTPRequest requestWithURL:url];
     [request setDelegate:delegate];
-    
     
     NSMutableArray *cookiesArray = [[NSMutableArray alloc] init];
     [cookiesArray addObject:cookie2];

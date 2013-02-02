@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E506635916AEB8DB00328205 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E506635816AEB8DB00328205 /* LoginViewController.m */; };
+		E50BD98716BB6D5400735E00 /* BBSBoardConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E50BD98616BB6D5400735E00 /* BBSBoardConfigViewController.m */; };
+		E50CE4ED16BA6BA7002001A4 /* SettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E50CE4EB16BA6BA7002001A4 /* SettingTableViewController.m */; };
 		E50D583316B10F33005CF3D8 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = E50D583216B10F33005CF3D8 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E50D584616B132E4005CF3D8 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E50D584416B132E4005CF3D8 /* SVProgressHUD.m */; };
 		E50D584716B132E4005CF3D8 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E50D584516B132E4005CF3D8 /* SVProgressHUD.bundle */; };
@@ -15,6 +17,8 @@
 		E543C59B16A98650007398C1 /* ArticleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E543C59A16A98650007398C1 /* ArticleDetailViewController.m */; };
 		E5587E88169D18F3002AA6B8 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E5587E87169D18F3002AA6B8 /* libicucore.dylib */; };
 		E5587E8C169D1958002AA6B8 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = E5587E8B169D1958002AA6B8 /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E566FCA816BBBE160081A705 /* ReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E566FCA716BBBE160081A705 /* ReplyViewController.m */; };
+		E589FF3016B15BEE00EC555B /* JYTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = E589FF2F16B15BEE00EC555B /* JYTextField.m */; };
 		E5956822169BE86D00C37832 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E5956820169BE86D00C37832 /* InfoPlist.strings */; };
 		E5956824169BE86D00C37832 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E5956823169BE86D00C37832 /* main.m */; };
 		E5956828169BE86D00C37832 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E5956827169BE86D00C37832 /* AppDelegate.m */; };
@@ -44,6 +48,8 @@
 		E5A2DEF8169C346B0075BC7F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E595681B169BE86D00C37832 /* CoreGraphics.framework */; };
 		E5A2DEFA169C3C150075BC7F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A2DEF9169C3C150075BC7F /* libz.dylib */; };
 		E5A2DEFC169C3C1C0075BC7F /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A2DEFB169C3C1C0075BC7F /* libz.1.2.5.dylib */; };
+		E5A3840816B229EF005C808B /* 57.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A3840716B229EF005C808B /* 57.png */; };
+		E5A3840B16B229F4005C808B /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A3840A16B229F4005C808B /* 114.png */; };
 		E5BE2C1C16A00E3100620D3D /* ArticleTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5BE2C1B16A00E3100620D3D /* ArticleTitleCell.m */; };
 		E5BE2C1E16A00F0D00620D3D /* ArticleTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5BE2C1D16A00F0D00620D3D /* ArticleTitleCell.xib */; };
 		E5EA84D216A2BA4800183640 /* CustomPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = E5EA84D116A2BA4800183640 /* CustomPullToRefresh.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -97,6 +103,10 @@
 /* Begin PBXFileReference section */
 		E506635716AEB8DB00328205 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		E506635816AEB8DB00328205 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		E50BD98516BB6D5400735E00 /* BBSBoardConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBSBoardConfigViewController.h; sourceTree = "<group>"; };
+		E50BD98616BB6D5400735E00 /* BBSBoardConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBSBoardConfigViewController.m; sourceTree = "<group>"; };
+		E50CE4EB16BA6BA7002001A4 /* SettingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingTableViewController.m; sourceTree = "<group>"; };
+		E50CE4EC16BA6BA7002001A4 /* SettingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingTableViewController.h; sourceTree = "<group>"; };
 		E50D583116B10F33005CF3D8 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		E50D583216B10F33005CF3D8 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		E50D584316B132E4005CF3D8 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
@@ -109,6 +119,10 @@
 		E5587E87169D18F3002AA6B8 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		E5587E8A169D1958002AA6B8 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
 		E5587E8B169D1958002AA6B8 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
+		E566FCA616BBBE160081A705 /* ReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyViewController.h; sourceTree = "<group>"; };
+		E566FCA716BBBE160081A705 /* ReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyViewController.m; sourceTree = "<group>"; };
+		E589FF2E16B15BEE00EC555B /* JYTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JYTextField.h; sourceTree = "<group>"; };
+		E589FF2F16B15BEE00EC555B /* JYTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JYTextField.m; sourceTree = "<group>"; };
 		E5956813169BE86D00C37832 /* CsdnReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CsdnReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5956817169BE86D00C37832 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E5956819169BE86D00C37832 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -160,6 +174,8 @@
 		E5A097D416AC23FA007E1600 /* AsyncImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncImageView.m; sourceTree = "<group>"; };
 		E5A2DEF9169C3C150075BC7F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		E5A2DEFB169C3C1C0075BC7F /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
+		E5A3840716B229EF005C808B /* 57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 57.png; path = ../57.png; sourceTree = "<group>"; };
+		E5A3840A16B229F4005C808B /* 114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 114.png; path = ../114.png; sourceTree = "<group>"; };
 		E5BE2C1A16A00E3100620D3D /* ArticleTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArticleTitleCell.h; sourceTree = "<group>"; };
 		E5BE2C1B16A00E3100620D3D /* ArticleTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleTitleCell.m; sourceTree = "<group>"; };
 		E5BE2C1D16A00F0D00620D3D /* ArticleTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArticleTitleCell.xib; sourceTree = "<group>"; };
@@ -251,6 +267,7 @@
 		E506635616AEB75F00328205 /* HelpClass */ = {
 			isa = PBXGroup;
 			children = (
+				E589FF2C16B15BDF00EC555B /* JYTextField */,
 				E50D584216B132D1005CF3D8 /* SVProgressHUD */,
 				E50D583016B10F27005CF3D8 /* JSONKit */,
 				E5A097D216AC23E2007E1600 /* AsyncImageView */,
@@ -289,6 +306,15 @@
 				E5587E8B169D1958002AA6B8 /* RegexKitLite.m */,
 			);
 			name = RegexKitLite;
+			sourceTree = "<group>";
+		};
+		E589FF2C16B15BDF00EC555B /* JYTextField */ = {
+			isa = PBXGroup;
+			children = (
+				E589FF2E16B15BEE00EC555B /* JYTextField.h */,
+				E589FF2F16B15BEE00EC555B /* JYTextField.m */,
+			);
+			name = JYTextField;
 			sourceTree = "<group>";
 		};
 		E5956808169BE86D00C37832 = {
@@ -330,6 +356,12 @@
 				E506635616AEB75F00328205 /* HelpClass */,
 				E506635416AEB74500328205 /* Model */,
 				E595682F169BE86D00C37832 /* MainStoryboard.storyboard */,
+				E566FCA616BBBE160081A705 /* ReplyViewController.h */,
+				E566FCA716BBBE160081A705 /* ReplyViewController.m */,
+				E50BD98516BB6D5400735E00 /* BBSBoardConfigViewController.h */,
+				E50BD98616BB6D5400735E00 /* BBSBoardConfigViewController.m */,
+				E50CE4EC16BA6BA7002001A4 /* SettingTableViewController.h */,
+				E50CE4EB16BA6BA7002001A4 /* SettingTableViewController.m */,
 				E5996B9816AA73AD005F317D /* ConstParameterAndMethod.h */,
 				E5996B9916AA73AD005F317D /* ConstParameterAndMethod.m */,
 				E506635716AEB8DB00328205 /* LoginViewController.h */,
@@ -349,6 +381,8 @@
 		E595681E169BE86D00C37832 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E5A3840A16B229F4005C808B /* 114.png */,
+				E5A3840716B229EF005C808B /* 57.png */,
 				E5F8B308169E7156006CFABD /* libxml2.dylib */,
 				E5956826169BE86D00C37832 /* AppDelegate.h */,
 				E5956827169BE86D00C37832 /* AppDelegate.m */,
@@ -588,6 +622,8 @@
 				E5EA852216A2BA8500183640 /* loading-19.png in Resources */,
 				E5EA852316A2BA8500183640 /* loading-19@2x.png in Resources */,
 				E50D584716B132E4005CF3D8 /* SVProgressHUD.bundle in Resources */,
+				E5A3840816B229EF005C808B /* 57.png in Resources */,
+				E5A3840B16B229F4005C808B /* 114.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +662,10 @@
 				E5A097CE16ABF31F007E1600 /* Reply.m in Sources */,
 				E506635916AEB8DB00328205 /* LoginViewController.m in Sources */,
 				E50D584616B132E4005CF3D8 /* SVProgressHUD.m in Sources */,
+				E589FF3016B15BEE00EC555B /* JYTextField.m in Sources */,
+				E50CE4ED16BA6BA7002001A4 /* SettingTableViewController.m in Sources */,
+				E50BD98716BB6D5400735E00 /* BBSBoardConfigViewController.m in Sources */,
+				E566FCA816BBBE160081A705 /* ReplyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,7 +728,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -696,6 +736,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -714,6 +755,7 @@
 					"\"$(SRCROOT)/CsdnReader\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -732,6 +774,7 @@
 					"\"$(SRCROOT)/CsdnReader\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};

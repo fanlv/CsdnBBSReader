@@ -18,6 +18,9 @@
 
 
 @interface ArticleViewController ()
+{
+    NSIndexPath *currentIndexPath;
+}
 
 @property (nonatomic,strong) NSArray *articleLists;
 @property (nonatomic,strong) NSString *urlWithOutPage;
@@ -51,43 +54,57 @@
 
 - (void)doRefresh:(id)sender
 {
+    
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [spinner startAnimating];
-    //[spinner stopAnimating];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     [self.coustomPullToRefresh startRefresh];
     [ConstParameterAndMethod setDataSourceWithGetWebSiteHtmlWithOutCookie:urlWithOutPage andSetDelegate:self];
 
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (![self.navigationItem.title isEqualToString:self.tabBarController.tabBar.selectedItem.title])
+    {
+        if (articleLists.count != 0)
+        {
+            articleLists = [[NSArray alloc] init];
+            [self.tableView reloadData];
+        }
+  
+        [ConstParameterAndMethod RefreshTabBarController:self.tabBarController];
+        self.navigationItem.title = self.tabBarController.tabBar.selectedItem.title;
+        NSDictionary *bbsUrlList = [ConstParameterAndMethod BBSUrlList];
+        urlWithOutPage = [bbsUrlList objectForKey:self.navigationItem.title];
+        page = 1;
+        [ConstParameterAndMethod setDataSourceWithGetWebSiteHtmlWithOutCookie:urlWithOutPage andSetDelegate:self];
+        
+    }
+    
+   if (currentIndexPath == nil)
+   {
+       return;
+   }
+   [self.tableView deselectRowAtIndexPath:currentIndexPath animated:YES];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    page = 1;
-    coustomPullToRefresh = [[CustomPullToRefresh alloc] initWithScrollView:self.tableView delegate:self];
-    self.navigationController.navigationBar.tintColor = [UIColor purpleColor];
     
+
+    
+    
+    coustomPullToRefresh = [[CustomPullToRefresh alloc] initWithScrollView:self.tableView delegate:self];
+
+    self.navigationController.navigationBar.tintColor = [UIColor purpleColor];
+
     //---设置左上角按钮
     self.navigationItem.rightBarButtonItem = self.refreshButton;
     
-    if ([self.navigationItem.title isEqualToString:@".NET"])
-    {
-        urlWithOutPage = CSDN_BBS_DOTNET_URL;
-    }
-    else if([self.navigationItem.title isEqualToString:@"C/C++"])
-    {
-        urlWithOutPage = CSDN_BBS_CPP_URL;
-    }
-    else if([self.navigationItem.title isEqualToString:@"移动平台"])
-    {
-        urlWithOutPage = CSDN_BBS_MOBILE_URL;
-    }
-    else
-    {
-        urlWithOutPage = CSDN_BBS_OTHER_URL;
-    }
-    [ConstParameterAndMethod setDataSourceWithGetWebSiteHtmlWithOutCookie:urlWithOutPage andSetDelegate:self];
+    
+
 }
 
 
@@ -115,6 +132,9 @@
     }
     
     HTMLNode *bodyNode = [parser body];
+    
+
+  
     
     NSArray *spanNodes = [bodyNode findChildTags:@"tr"];
     NSMutableArray *artcileLisMutableArray ;
@@ -343,6 +363,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    currentIndexPath = indexPath;
     [self performSegueWithIdentifier:@"ShowDetail" sender:self];
 }
 
