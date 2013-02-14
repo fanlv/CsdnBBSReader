@@ -200,7 +200,7 @@
     NSMutableString *dateString = [[NSMutableString alloc] initWithString:date ];
     [dateString insertString:[NSString stringWithFormat:@"%d-", [comps year]] atIndex:0];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat: @"YYYY-MM-dd HH:mm"];
+    [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
     NSDate *sendDate = [dateFormatter dateFromString:dateString];
     
     NSString *showDateString = [[NSString alloc] init];

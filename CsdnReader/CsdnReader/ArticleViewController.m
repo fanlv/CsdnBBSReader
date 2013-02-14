@@ -92,19 +92,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-
-    
-    
     coustomPullToRefresh = [[CustomPullToRefresh alloc] initWithScrollView:self.tableView delegate:self];
-
     self.navigationController.navigationBar.tintColor = [UIColor purpleColor];
-
     //---设置左上角按钮
     self.navigationItem.rightBarButtonItem = self.refreshButton;
-    
-    
-
 }
 
 
@@ -409,8 +400,6 @@
     //[self.coustomPullToRefresh startRefresh];
     [ConstParameterAndMethod setDataSourceWithGetWebSiteHtmlWithOutCookie:webSiteUrl andSetDelegate:self];
 }
-
-
 
 - (void)viewDidUnload { 
     [self setTableView:nil];

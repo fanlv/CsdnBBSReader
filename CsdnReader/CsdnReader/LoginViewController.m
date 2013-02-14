@@ -128,22 +128,8 @@
     {
         [SVProgressHUD dismissWithError:@"帐号登录失败！"];
         
-    }
-    
-       
+    }       
 
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    CGRect frame = webView.frame;
-    frame.size.height = 1;
-    webView.frame = frame;
-    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
-    frame.size.height = fittingSize.height;
-    frame.size.width = 320;
-    webView.frame = frame;
-    //NSLog(@"%f",frame.size.height);
 }
 
 
