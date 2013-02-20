@@ -52,6 +52,7 @@
 		E5A3840B16B229F4005C808B /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A3840A16B229F4005C808B /* 114.png */; };
 		E5BE2C1C16A00E3100620D3D /* ArticleTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5BE2C1B16A00E3100620D3D /* ArticleTitleCell.m */; };
 		E5BE2C1E16A00F0D00620D3D /* ArticleTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5BE2C1D16A00F0D00620D3D /* ArticleTitleCell.xib */; };
+		E5C05BA916CFB3920046D511 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C05BA816CFB3920046D511 /* MessageUI.framework */; };
 		E5EA84D216A2BA4800183640 /* CustomPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = E5EA84D116A2BA4800183640 /* CustomPullToRefresh.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E5EA84FC16A2BA8500183640 /* big_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E5EA84D416A2BA8500183640 /* big_arrow.png */; };
 		E5EA84FD16A2BA8500183640 /* big_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E5EA84D516A2BA8500183640 /* big_arrow@2x.png */; };
@@ -179,6 +180,7 @@
 		E5BE2C1A16A00E3100620D3D /* ArticleTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArticleTitleCell.h; sourceTree = "<group>"; };
 		E5BE2C1B16A00E3100620D3D /* ArticleTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleTitleCell.m; sourceTree = "<group>"; };
 		E5BE2C1D16A00F0D00620D3D /* ArticleTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArticleTitleCell.xib; sourceTree = "<group>"; };
+		E5C05BA816CFB3920046D511 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		E5EA84D016A2BA4800183640 /* CustomPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPullToRefresh.h; sourceTree = "<group>"; };
 		E5EA84D116A2BA4800183640 /* CustomPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPullToRefresh.m; sourceTree = "<group>"; };
 		E5EA84D416A2BA8500183640 /* big_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = big_arrow.png; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5C05BA916CFB3920046D511 /* MessageUI.framework in Frameworks */,
 				E5F8B309169E7157006CFABD /* libxml2.dylib in Frameworks */,
 				E5587E88169D18F3002AA6B8 /* libicucore.dylib in Frameworks */,
 				E5A2DEFC169C3C1C0075BC7F /* libz.1.2.5.dylib in Frameworks */,
@@ -340,6 +343,7 @@
 				E5587E87169D18F3002AA6B8 /* libicucore.dylib */,
 				E5A2DEFB169C3C1C0075BC7F /* libz.1.2.5.dylib */,
 				E5A2DEF9169C3C150075BC7F /* libz.dylib */,
+				E5C05BA816CFB3920046D511 /* MessageUI.framework */,
 				E5956841169C09DE00C37832 /* CFNetwork.framework */,
 				E5956845169C0A3900C37832 /* MobileCoreServices.framework */,
 				E5956843169C0A2000C37832 /* SystemConfiguration.framework */,

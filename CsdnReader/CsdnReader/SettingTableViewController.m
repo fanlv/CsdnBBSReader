@@ -9,8 +9,9 @@
 #import "SettingTableViewController.h"
 #import "ConstParameterAndMethod.h"
 #import "BBSBoardConfigViewController.h"
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface SettingTableViewController ()
+@interface SettingTableViewController ()<MFMailComposeViewControllerDelegate>
 
 @end
 
@@ -63,7 +64,7 @@ static bool isUserLoginTemp = NO;
             return 1;
     
     }
-    return 3;
+    return 4;
 }
 
 
@@ -81,6 +82,9 @@ static bool isUserLoginTemp = NO;
                 break;
             case 2:
                 cell.detailTextLabel.text = [ConstParameterAndMethod ThridBBSBoard];
+                break;
+            default:
+                cell.detailTextLabel.text = @"";
                 break;
         }
     }
@@ -124,6 +128,31 @@ static bool isUserLoginTemp = NO;
     }
 }
 
+#pragma mark - Mail delegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error {
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail send canceled...");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved...");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent...");
+            break;
+        case MFMailComposeResultFailed:
+            NSLog(@"Mail send errored: %@...", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -131,7 +160,32 @@ static bool isUserLoginTemp = NO;
     
     if (indexPath.section == 0)
     {
-        [self performSegueWithIdentifier:@"ConfigBBSBoard" sender:self];
+        if (indexPath.row != 3)
+        {
+            [self performSegueWithIdentifier:@"ConfigBBSBoard" sender:self];
+        }
+        else
+        {
+
+            MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+  
+            if (mc != nil)
+            {     
+                mc.mailComposeDelegate = self;                
+                NSString *emailAddress = @"fanlvlgh@gmail.com";
+                [mc setToRecipients:[NSArray arrayWithObject:emailAddress]];
+                [mc setSubject:@"CSDN论坛阅读器意见反馈"];
+                [self presentModalViewController:mc animated:YES];
+            }
+//            else
+//            {
+//                //创建对话框
+//                UIAlertView * alertA= [[UIAlertView alloc] initWithTitle:@"" message:@"退出登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+//                [alertA show];
+//            }
+            
+        
+        }
     }
     
     if (indexPath.section == 1)
