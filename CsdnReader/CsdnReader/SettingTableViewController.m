@@ -10,6 +10,7 @@
 #import "ConstParameterAndMethod.h"
 #import "BBSBoardConfigViewController.h"
 #import <MessageUI/MFMailComposeViewController.h>
+#import <ShareSDK/ShareSDK.h>
 
 @interface SettingTableViewController ()<MFMailComposeViewControllerDelegate>
 
@@ -64,7 +65,7 @@ static bool isUserLoginTemp = NO;
             return 1;
     
     }
-    return 4;
+    return 5;
 }
 
 
@@ -83,9 +84,16 @@ static bool isUserLoginTemp = NO;
             case 2:
                 cell.detailTextLabel.text = [ConstParameterAndMethod ThridBBSBoard];
                 break;
-            default:
+            case 3:
                 cell.detailTextLabel.text = @"";
                 break;
+            case 4:
+            {
+
+                NSString *version = [ConstParameterAndMethod GetAppVersion];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"程序版本号：%@",version];
+                break;
+            }
         }
     }
     if (indexPath.section == 1)
@@ -160,31 +168,22 @@ static bool isUserLoginTemp = NO;
     
     if (indexPath.section == 0)
     {
-        if (indexPath.row != 3)
+        if (indexPath.row < 3)
         {
             [self performSegueWithIdentifier:@"ConfigBBSBoard" sender:self];
         }
-        else
+        else if (indexPath.row == 3)
         {
-
             MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
-  
-            if (mc != nil)
+              if (mc != nil)
             {     
                 mc.mailComposeDelegate = self;                
                 NSString *emailAddress = @"fanlvlgh@gmail.com";
                 [mc setToRecipients:[NSArray arrayWithObject:emailAddress]];
-                [mc setSubject:@"CSDN论坛阅读器意见反馈"];
+                NSString *version = [ConstParameterAndMethod GetAppVersion];
+                [mc setSubject:[NSString stringWithFormat:@"CSDN论坛阅读器%@意见反馈",version] ];
                 [self presentModalViewController:mc animated:YES];
-            }
-//            else
-//            {
-//                //创建对话框
-//                UIAlertView * alertA= [[UIAlertView alloc] initWithTitle:@"" message:@"退出登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-//                [alertA show];
-//            }
-            
-        
+            }            
         }
     }
     
@@ -215,6 +214,39 @@ static bool isUserLoginTemp = NO;
     }
 
 }
+- (IBAction)share:(UIBarButtonItem *)sender
+{
+    id<ISSPublishContent> publishContent = [ShareSDK publishContent:@"IOS上的#CSDN阅读器#，让你浏览CSDN更方便。https://itunes.apple.com/cn/app/csdnreader/id599235208"
+                                                     defaultContent:@""
+                                                              image:nil//[UIImage imageNamed:@"share11.jpg"]
+                                                       imageQuality:0
+                                                          mediaType:SSPublishContentMediaTypeText
+                                                              title:@"ShareSDK"
+                                                                url:@""
+                                                       musicFileUrl:nil
+                                                            extInfo:nil
+                                                           fileData:nil];
+    [ShareSDK showShareActionSheet:self
+                         shareList:nil
+                           content:publishContent
+                     statusBarTips:YES
+                   oneKeyShareList:[NSArray defaultOneKeyShareList]
+                          autoAuth:YES
+                        convertUrl:YES
+                    shareViewStyle:ShareViewStyleSimple
+                    shareViewTitle:@"内容分享"
+                            result:^(ShareType type, SSPublishContentState state, id<ISSStatusInfo>
+                                     statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                if (state == SSPublishContentStateSuccess)
+                                {
+                                    NSLog(@"分享成功!");
+                                }
+                                else if(state == SSPublishContentStateFail)
+                                {
+                                    NSLog(@"分享失败!");
+                                }
+                            }];
+}
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -223,6 +255,7 @@ static bool isUserLoginTemp = NO;
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         [ud setObject:@"" forKey:COOKIE_USERNAME];
         [ud setObject:@"" forKey:COOKIE_USERINFO];
+        [ud synchronize];
         [self.tableView reloadData];
         isUserLoginTemp = NO;
     }

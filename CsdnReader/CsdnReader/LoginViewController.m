@@ -102,6 +102,7 @@
             if (![cookie.value isEqualToString:@""])
             {
                 [ud setObject:cookie.value forKey:cookie.name];
+                [ud synchronize];
             }
         }
     }

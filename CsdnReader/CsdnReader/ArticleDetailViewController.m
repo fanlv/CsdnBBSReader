@@ -15,26 +15,32 @@
 #import "Reply.h"
 #import "AsyncImageView.h"
 #import "ReplyViewController.h"
+#import "PopupListComponent.h"
+#import <ShareSDK/ShareSDK.h>
 
 
-
-
-@interface ArticleDetailViewController () <CustomPullToRefreshDelegate>
+@interface ArticleDetailViewController () <CustomPullToRefreshDelegate,PopupListComponentDelegate>
+{
+    BOOL isOnlySeeAuthor;
+}
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *replyButton;
-
+@property (nonatomic, strong) PopupListComponent *activePopup;
 @property (nonatomic,strong) CustomPullToRefresh *coustomPullToRefresh;
 @property (nonatomic) NSInteger page;
 @property (nonatomic,strong) NSArray *replyLists;
+@property (nonatomic,strong) NSArray *authorReplyLists;
+
 
 @end
 
 @implementation ArticleDetailViewController
 
 @synthesize article = _article;
-@synthesize coustomPullToRefresh;
-@synthesize page;
-@synthesize replyLists;
+@synthesize activePopup = _activePopup;
+@synthesize coustomPullToRefresh = _coustomPullToRefresh;
+@synthesize page = _page;
+@synthesize replyLists = _replyLists;
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -56,10 +62,9 @@
 {
     [super viewDidLoad];
     
-
-    
-    page = 1;
-    coustomPullToRefresh = [[CustomPullToRefresh alloc] initWithScrollView:self.tableView delegate:self];
+    isOnlySeeAuthor = NO;
+    self.page = 1;
+    self.coustomPullToRefresh = [[CustomPullToRefresh alloc] initWithScrollView:self.tableView delegate:self];
 
     
     self.title = self.article.title;
@@ -105,10 +110,8 @@
 
 - (void)setArticle:(Article *)article
 {
-    
     _article = article;
     [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:article.completeLink andSetDelegate:self];
-    
 }
 
 
@@ -119,7 +122,6 @@
         ReplyViewController *replyViewController = [segue destinationViewController];
         NSString *topicId = [self.article.link stringByReplacingOccurrencesOfString:@"/topics/" withString:@""];
         [replyViewController setTopicId:topicId];
-        
     }
 }
 
@@ -165,25 +167,36 @@
         [SGInfoAlert showInfo: [NSString stringWithFormat:@"网络异常: %@",errorDetail]
                       bgColor:[[UIColor blackColor] CGColor]
                        inView:self.view vertical:0.8];
-        [coustomPullToRefresh endRefresh];
+        [self.coustomPullToRefresh endRefresh];
         return;
     }
     NSMutableArray *replyLisMutableArray ;
+    NSMutableArray *authorReplyLisMutableArray ;
+
     NSUInteger rowCount = 0;
-    if (page != 1)
+    NSUInteger authorRowCount = 0;
+    int indexTmp = 0;
+
+    if (self.page != 1)
     {
-        replyLisMutableArray = [[NSMutableArray alloc] initWithArray:replyLists];
+        replyLisMutableArray = [[NSMutableArray alloc] initWithArray:self.replyLists];
         rowCount = replyLisMutableArray.count;
+        indexTmp = rowCount;
+        
+        authorReplyLisMutableArray = [[NSMutableArray alloc] initWithArray:self.authorReplyLists];
+        authorRowCount = authorReplyLisMutableArray.count;
     }
     else
     {
         replyLisMutableArray = [[NSMutableArray alloc] init];
+        authorReplyLisMutableArray = [[NSMutableArray alloc] init];
     }
     
     HTMLNode *bodyNode = [parser body];
     HTMLNode *wraper = [bodyNode findChildOfClass:@"wraper"];
     HTMLNode *detailed = [wraper findChildOfClass:@"detailed"];
     NSArray *replyNodes = [detailed findChildTags:@"table"];
+    
     for (HTMLNode *tableNode in replyNodes)
     {
         HTMLNode *trNode = [tableNode findChildTag:@"tr"];
@@ -220,10 +233,9 @@
             HTMLNode *moderatorImg = [nameNode findChildTag:@"img"];
             if (moderatorImg != nil)
             {
-                if ([[moderatorImg getAttributeNamed:@"alt"] isEqualToString:@"版主"]) {
-                    
-                    reply.name = [NSString stringWithFormat:@"%@(版主)",reply.name];
-                    //reply.name = [NSS
+                if ([[moderatorImg getAttributeNamed:@"alt"] isEqualToString:@"版主"])
+                {
+                    reply.isModerator = YES;
                 }
             }
             
@@ -263,23 +275,46 @@
             reply.content = [contentNode.allContents stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
             //NSLog(@"%@",reply.content);
-            
+
+            //----是不是楼主
+            reply.isAuthor = [reply.name isEqualToString:self.article.author];
+        
+            reply.indexR = indexTmp++;
+            if (reply.isAuthor)
+            {
+                [authorReplyLisMutableArray addObject:reply];
+            }
             
             [replyLisMutableArray addObject:reply];
         }
     }
     
-    replyLists = [replyLisMutableArray copy];
-    [coustomPullToRefresh endRefresh];
+    self.replyLists = [replyLisMutableArray copy];
+    self.authorReplyLists = [authorReplyLisMutableArray copy];
+    [self.coustomPullToRefresh endRefresh];
     
     [self.tableView reloadData];
-    if (rowCount != 0 && replyLisMutableArray.count > rowCount)
+    if (isOnlySeeAuthor)
     {
-        NSUInteger ii[2] = {0, rowCount};
-        NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:ii length:2];
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom
-                                      animated:YES];
+        if (authorRowCount != 0 && authorReplyLisMutableArray.count > rowCount)
+        {
+            NSUInteger ii[2] = {0, authorRowCount};
+            NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:ii length:2];
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom
+                                          animated:YES];
+        }
     }
+    else
+    {
+        if (rowCount != 0 && replyLisMutableArray.count > rowCount)
+        {
+            NSUInteger ii[2] = {0, rowCount};
+            NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:ii length:2];
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom
+                                          animated:YES];
+        }
+    }
+
     
 }
 
@@ -309,6 +344,10 @@
     if (self.replyLists.count == 0)
 	{
         return 1;
+    }
+    if (isOnlySeeAuthor)
+    {
+        return self.authorReplyLists.count;
     }
     return self.replyLists.count;
     
@@ -348,17 +387,38 @@
     }
     
     
+    Reply *reply ;
+    if (isOnlySeeAuthor)
+    {
+        reply = [self.authorReplyLists objectAtIndex:indexPath.row];
+    }
+    else
+    {
+        reply = [self.replyLists objectAtIndex:indexPath.row];
+    }
     
     
     
-    
-    Reply *reply = [self.replyLists objectAtIndex:indexPath.row];
-    UILabel *nameLabel = (UILabel *)[cell viewWithTag:998];
+    UILabel *userInfoLabel = (UILabel *)[cell viewWithTag:998];
     UILabel *rowLabel = (UILabel *)[cell viewWithTag:997];
+    UILabel *replyNmaeLabel = (UILabel *)[cell viewWithTag:996];
     UILabel *dateLabel = (UILabel *)[cell viewWithTag:995];
     UIWebView *webView = (UIWebView *)[cell viewWithTag:588];
     
-    nameLabel.text = [NSString stringWithFormat:@"%@   等级：%@ (排名:%@)",reply.name,reply.grade,reply.rank]; // reply.name;
+    userInfoLabel.text = [NSString stringWithFormat:@"等级：%@ (排名:%@)",reply.grade,reply.rank];
+    
+    NSMutableString *showName = [[NSMutableString alloc] initWithString:reply.name];
+    
+    if (reply.isAuthor)
+    {
+        [showName appendString:@" (楼主)"];
+    }
+    if (reply.isModerator)
+    {
+        [showName appendString:@" (版主)"];
+    }
+    replyNmaeLabel.text = showName;
+
     if (indexPath.row == 0)
     {
         rowLabel.text = @"楼主";
@@ -366,10 +426,10 @@
     }
     else
     {
-        rowLabel.text = [NSString stringWithFormat:@"%d楼",indexPath.row];
+        rowLabel.text = [NSString stringWithFormat:@"%d楼",reply.indexR];
         dateLabel.text = [NSString stringWithFormat:@"回复于：%@",reply.date];
-        
     }
+    
     float height = [ConstParameterAndMethod getArticleTitleHeight:reply.rawContents
                                                         withWidth:tableView.frame.size.width - 10
                                                           andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];
@@ -399,7 +459,7 @@
     
     
     int iii = 1;
-    while (iii < 5 && indexPath.row +iii < replyLists.count )
+    while (iii < 5 && indexPath.row +iii < self.replyLists.count )
     {
         Reply *reply = [self.replyLists objectAtIndex:indexPath.row + iii];
         if (reply.imageView == nil)
@@ -448,6 +508,11 @@
 #pragma mark - Table view delegate
 
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.activePopup = nil;
+}
+
 - (void)tableView:(UITableView *)tableView
   willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -484,6 +549,124 @@
     }
 }
 
+#pragma mark - 更多
+
+
+- (IBAction)moreButtonClick:(id)sender
+{
+    
+    if (self.activePopup) {
+        [self.activePopup hide];
+    }
+    
+    PopupListComponent *popupList = [[PopupListComponent alloc] init];
+    NSArray* listItems = nil;
+    
+    NSString *temp;
+    if (isOnlySeeAuthor)
+        temp = @"查看全部";
+    else
+        temp = @"只看楼主";
+    
+    listItems = [NSArray arrayWithObjects:
+                 [[PopupListComponentItem alloc] initWithCaption:@"回复帖子" image:nil itemId:1 showCaption:YES],
+                 [[PopupListComponentItem alloc] initWithCaption:@"分享帖子" image:nil itemId:2 showCaption:YES],
+                 [[PopupListComponentItem alloc] initWithCaption:temp image:nil itemId:3 showCaption:YES],
+                 nil];
+    
+    
+    // Optional: override any default properties you want to change, such as:
+    popupList.imagePaddingVertical = 25;
+    
+    // Optional: store any object you want to have access to in the delegeate callback(s):
+    popupList.userInfo = @"Value to hold on to";
+    // Optional: override any default properties you want to change, such as:
+    popupList.textColor = [UIColor blueColor];
+
+    [popupList showAnchoredTo:self.tableView inView:self.tableView withItems:listItems withDelegate:self];
+    
+    self.activePopup = popupList;
+}
+
+
+#pragma mark - Delegate Callbacks
+
+
+- (void) popupListcomponent:(PopupListComponent *)sender choseItemWithId:(int)itemId
+{
+    if (itemId == 1)
+    {
+        if (![ConstParameterAndMethod isUserLogin])
+        {
+            //创建对话框
+            UIAlertView * alertA= [[UIAlertView alloc] initWithTitle:@"" message:@"请先登录帐号。谢谢。" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            alertA.delegate = self;
+            //将这个UIAlerView 显示出来
+            [alertA show];
+        }
+        else
+        [self performSegueWithIdentifier:@"Reply" sender:self];
+    }
+    else if (itemId == 2)
+    {
+        NSString *shareContent = [NSString stringWithFormat:@"%@,%@  #CSDN阅读器#",self.article.title,self.article.completeLink];
+        id<ISSPublishContent> publishContent = [ShareSDK publishContent:shareContent
+                                                         defaultContent:@""
+                                                                  image:nil//[UIImage imageNamed:@"share11.jpg"]
+                                                           imageQuality:0
+                                                              mediaType:SSPublishContentMediaTypeText
+                                                                  title:@"ShareSDK"
+                                                                    url:@""
+                                                           musicFileUrl:nil
+                                                                extInfo:nil
+                                                               fileData:nil];
+        [ShareSDK showShareActionSheet:self
+                             shareList:nil
+                               content:publishContent
+                         statusBarTips:YES
+                       oneKeyShareList:[NSArray defaultOneKeyShareList]
+                              autoAuth:YES
+                            convertUrl:YES
+                        shareViewStyle:ShareViewStyleSimple
+                        shareViewTitle:@"内容分享"
+                                result:^(ShareType type, SSPublishContentState state, id<ISSStatusInfo>
+                                         statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                    if (state == SSPublishContentStateSuccess)
+                                    {
+                                        NSLog(@"分享成功!");
+                                    }
+                                    else if(state == SSPublishContentStateFail)
+                                    {
+                                        NSLog(@"分享失败!");
+                                    }
+                                }];
+    }
+    else if (itemId == 3)
+    {
+        isOnlySeeAuthor = !isOnlySeeAuthor;
+        [self.tableView reloadData];
+
+    }
+    
+    
+//    NSLog(@"User chose item with id = %d", itemId);
+    
+//    // If you stored a "userInfo" object in the popup, access it as:
+//    id anyObjectToPassToCallback = sender.userInfo;
+//    //NSLog(@"popup userInfo = %@", anyObjectToPassToCallback);
+//    
+//    // Free component object, since our action method recreates it each time:
+    self.activePopup = nil;
+}
+
+- (void) popupListcompoentDidCancel:(PopupListComponent *)sender
+{
+    NSLog(@"Popup cancelled");
+    
+    // Free component object, since our action method recreates it each time:
+   self.activePopup = nil;
+}
+
 
 #pragma mark - 下拉、上拉实现 动态加载数据
 
@@ -494,18 +677,18 @@
         NSLog(@"%d",self.replyLists.count);
         if (((self.replyLists.count - 1) % 100) != 0)
         {
-            [coustomPullToRefresh endRefresh];
+            [self.coustomPullToRefresh endRefresh];
             return;
         }
-        page += 1;
+        self.page += 1;
         NSMutableString *tmp = [[NSMutableString alloc] initWithString:self.article.completeLink];
-        [tmp appendString:[NSString stringWithFormat:@"?page=%d",page]];        
+        [tmp appendString:[NSString stringWithFormat:@"?page=%d",self.page]];        
         [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:tmp andSetDelegate:self];
         
     }
     if (direction == MSRefreshDirectionTop)
     {
-        page = 1;
+        self.page = 1;
         [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:self.article.completeLink andSetDelegate:self];
     }
     

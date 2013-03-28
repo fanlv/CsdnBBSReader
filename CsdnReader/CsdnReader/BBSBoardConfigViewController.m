@@ -135,6 +135,7 @@ int currentIndex = 0;
         newCell.accessoryType = UITableViewCellAccessoryCheckmark;
         newCell.textLabel.textColor=RGB(81, 102, 145);
         [ud setObject:newCell.textLabel.text forKey:bbsIndexName];
+        [ud synchronize];
     }
     UITableViewCell *oldCell = [tableView cellForRowAtIndexPath:oldIndexPath];
     if (oldCell.accessoryType == UITableViewCellAccessoryCheckmark)

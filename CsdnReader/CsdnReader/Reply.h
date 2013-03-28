@@ -20,6 +20,10 @@
 @property (nonatomic, strong) NSString *totalTechnicalpoints;
 @property (nonatomic, strong) UIView   *imageView;
 @property (nonatomic, strong) NSString *rawContents;
+@property (nonatomic) BOOL isAuthor;
+@property (nonatomic) BOOL isModerator;
+@property (nonatomic) int  indexR;
+
 
 
 

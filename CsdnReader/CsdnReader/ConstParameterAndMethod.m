@@ -62,6 +62,13 @@
     return _thridBBSBoard;
 }
 
++ (NSString *)GetAppVersion
+{
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    return version;
+}
+
 
 
 + (NSDictionary *)BBSUrlList

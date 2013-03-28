@@ -12,5 +12,6 @@
 
 
 @implementation Reply
-@synthesize name,content,date,profileImageUrl,grade,nickName,closeRate,rank,totalTechnicalpoints,imageView,rawContents;
+@synthesize name,content,date,profileImageUrl,grade,nickName,closeRate,rank,
+            totalTechnicalpoints,imageView,rawContents,isAuthor,indexR,isModerator;
 @end

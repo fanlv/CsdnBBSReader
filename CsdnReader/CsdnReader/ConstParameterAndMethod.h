@@ -34,6 +34,7 @@
 
 + (NSString *)ThridBBSBoard;
 
++ (NSString *)GetAppVersion;
 
 
 + (BOOL)isUserLogin;

@@ -57,11 +57,12 @@
     
     if (flashMessages == nil)
     {
+        
         [SVProgressHUD dismissWithError:@"账号信息错误，请重新登录。" afterDelay:3];
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         [ud setObject:@"" forKey:COOKIE_USERNAME];
         [ud setObject:@"" forKey:COOKIE_USERINFO];
-
+        [ud synchronize];
         [self dismissModalViewControllerAnimated:YES];
         return;
 
