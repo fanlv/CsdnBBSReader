@@ -296,10 +296,11 @@
     [self.tableView reloadData];
     if (isOnlySeeAuthor)
     {
-        if (authorRowCount != 0 && authorReplyLisMutableArray.count > rowCount)
+        if (authorRowCount != 0 && authorReplyLisMutableArray.count > authorRowCount)
         {
             NSUInteger ii[2] = {0, authorRowCount};
             NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:ii length:2];
+            
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom
                                           animated:YES];
         }
@@ -535,8 +536,16 @@
     
     if (self.replyLists.count > 0)
     {
-        
-        Reply *reply = [self.replyLists objectAtIndex:indexPath.row];
+        Reply *reply ;
+        if (isOnlySeeAuthor)
+        {
+            reply = [self.authorReplyLists objectAtIndex:indexPath.row];
+        }
+        else
+        {
+            reply = [self.replyLists objectAtIndex:indexPath.row];
+
+        }
         float height = [ConstParameterAndMethod getArticleTitleHeight:reply.rawContents
                                                             withWidth:tableView.frame.size.width - 10
                                                               andFont:[UIFont systemFontOfSize:ARTICLE_TITIE_SIZE]];

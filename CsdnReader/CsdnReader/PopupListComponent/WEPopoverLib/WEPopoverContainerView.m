@@ -274,6 +274,9 @@ permittedArrowDirections:(UIPopoverArrowDirection)permittedArrowDirections
 					theArrowRect = CGRectMake(xArrowOffset, yArrowOffset, rightArrowImage.size.width, rightArrowImage.size.height);
 					
 					break;
+                default:
+                    NSLog(@"Unexpected case - will do nothing here");
+                    break;
 			}
 			
 			
@@ -305,6 +308,9 @@ permittedArrowDirections:(UIPopoverArrowDirection)permittedArrowDirections
 		case UIPopoverArrowDirectionRight:
 			arrowImage = rightArrowImage;
 			break;
+        default:
+            NSLog(@"Unexpected case - will do nothing here");
+            break;
 	}
 }
 

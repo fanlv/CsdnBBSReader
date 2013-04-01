@@ -18,6 +18,16 @@
 
     return YES;
 }
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [ShareSDK handleOpenURL:url wxDelegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return  [ShareSDK handleOpenURL:url wxDelegate:self];
+}
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
