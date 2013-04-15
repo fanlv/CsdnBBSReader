@@ -77,8 +77,8 @@
 // Definition of Defaults
 #define DEFAULT_IPAD_FONT           [UIFont systemFontOfSize:24]
 #define DEFAULT_IPAD_FONT_BOLD      [UIFont boldSystemFontOfSize:24]
-#define DEFAULT_IPHONE_FONT         [UIFont systemFontOfSize:20]
-#define DEFAULT_IPHONE_FONT_BOLD    [UIFont boldSystemFontOfSize:20]
+#define DEFAULT_IPHONE_FONT         [UIFont systemFontOfSize:15]
+#define DEFAULT_IPHONE_FONT_BOLD    [UIFont boldSystemFontOfSize:15]
 #define DEFAULT_FONT_COLOR          [UIColor whiteColor]
 #define DEFAULT_FONT_COLOR_SELECTED [UIColor grayColor]
 #define DEFAULT_BUTTON_SPACING      10

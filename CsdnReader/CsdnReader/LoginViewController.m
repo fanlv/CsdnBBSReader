@@ -91,22 +91,6 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    // 获得本地 cookies 集合（在第一次请求时服务器已返回 cookies，
-    NSArray *cookies = [request responseCookies];
-    NSHTTPCookie *cookie = nil ;
-    for (cookie in cookies)
-    {
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        if ([cookie.name isEqualToString:COOKIE_USERNAME] || [cookie.name isEqualToString:COOKIE_USERINFO])
-        {
-            if (![cookie.value isEqualToString:@""])
-            {
-                [ud setObject:cookie.value forKey:cookie.name];
-                [ud synchronize];
-            }
-        }
-    }
-    
 
     NSString *responseString = [request responseString];
     NSDictionary *data = [responseString objectFromJSONString];
@@ -116,18 +100,38 @@
 //    }
 
     NSString *statusString =[NSString stringWithFormat:@"%@",[data objectForKey:@"status"]];
-    
+
     if (statusString != nil && [statusString isEqualToString:@"1"])
     {
+        
+        // 获得本地 cookies 集合（在第一次请求时服务器已返回 cookies，
+        NSArray *cookies = [request responseCookies];
+        NSHTTPCookie *cookie = nil ;
+        for (cookie in cookies)
+        {
+            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+            if ([cookie.name isEqualToString:COOKIE_USERNAME] || [cookie.name isEqualToString:COOKIE_USERINFO]
+                || [cookie.name isEqualToString:COOKIE_USERNICK])
+            {
+                if (![cookie.value isEqualToString:@""])
+                {
+                    NSLog(@"vaule: %@, name : %@",cookie.value ,cookie.name);
+                    [ud setObject:cookie.value forKey:cookie.name];
+                    [ud synchronize];
+                }
+            }
+        }
+        
         [SVProgressHUD dismissWithSuccess:@"帐号登录成功！"];
-        //[self dismissModalViewControllerAnimated:YES];
-        //[self.navigationController popToViewController:viewController animated:YES];
-        //[self.navigationController popToRootViewControllerAnimated:YES];
         [self.navigationController popViewControllerAnimated:YES];
+        
+        
     }
     else
     {
-        [SVProgressHUD dismissWithError:@"帐号登录失败！"];
+        NSString *errorString =[NSString stringWithFormat:@"%@",[data objectForKey:@"error"]];
+
+        [SVProgressHUD dismissWithError:errorString];
         
     }       
 

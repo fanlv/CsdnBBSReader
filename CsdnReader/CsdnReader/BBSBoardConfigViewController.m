@@ -13,7 +13,10 @@
 {
     NSString *bbsBoardName;
     NSString *bbsIndexName;
+    NSArray *dataSourceArray;
+    BOOL isFirstLoad;
 }
+
 @end
 
 @implementation BBSBoardConfigViewController
@@ -47,21 +50,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-
-//    NSDictionary *bbsBoardList = [ConstParameterAndMethod BBSUrlList];
-//    
-//    for (NSString *key in bbsBoardList.allKeys)
-//    {
-//        if ([key isEqualToString:bbsBoardName])
-//        {
-//            break;
-//        }
-//        currentIndex++;
-//    }
-//    NSLog(@"%d",currentIndex);
-//    NSIndexPath* scrollIndexPath = [NSIndexPath indexPathForRow:currentIndex inSection:0];
-//    [self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    isFirstLoad = YES;
+    NSDictionary *bbsBoardList = [ConstParameterAndMethod BBSUrlList];
+    NSArray *myKeys = [bbsBoardList allKeys];
+    dataSourceArray = [myKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 }
 
 
@@ -78,6 +70,29 @@
     return [[ConstParameterAndMethod BBSUrlList] count];
 }
 
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (isFirstLoad)
+    {
+        isFirstLoad = NO;
+        int index = 0;
+        for (NSString *key in dataSourceArray)
+        {
+            if ([key isEqualToString:bbsBoardName])
+            {
+                break;
+            }
+            index++;
+        }
+        NSLog(@"%d",index);
+        NSIndexPath* scrollIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        [self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+
+    }
+
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -86,10 +101,8 @@
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
-    }
-    NSDictionary *bbsBoardList = [ConstParameterAndMethod BBSUrlList];
-    
-    cell.textLabel.text = [bbsBoardList.allKeys objectAtIndex:indexPath.row];
+    }    
+    cell.textLabel.text = [dataSourceArray objectAtIndex:indexPath.row];
     
     if ([cell.textLabel.text isEqualToString:bbsBoardName])
     {

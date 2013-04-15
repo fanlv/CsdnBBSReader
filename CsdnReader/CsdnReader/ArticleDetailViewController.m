@@ -16,12 +16,14 @@
 #import "AsyncImageView.h"
 #import "ReplyViewController.h"
 #import "PopupListComponent.h"
+#import "AddFavoriteViewController.h"
 #import <ShareSDK/ShareSDK.h>
 
 
 @interface ArticleDetailViewController () <CustomPullToRefreshDelegate,PopupListComponentDelegate>
 {
     BOOL isOnlySeeAuthor;
+    NSString *errorCode;
 }
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *replyButton;
@@ -30,7 +32,6 @@
 @property (nonatomic) NSInteger page;
 @property (nonatomic,strong) NSArray *replyLists;
 @property (nonatomic,strong) NSArray *authorReplyLists;
-
 
 @end
 
@@ -70,12 +71,17 @@
     self.title = self.article.title;
     NSMutableString *articleTitle = [[NSMutableString alloc] initWithString:self.article.title];
     
-    [articleTitle appendString:@"   ["];
-    [articleTitle appendString:self.article.category];
-    [articleTitle appendString:@"]   ["];
-    [articleTitle appendString:self.article.point];
-    [articleTitle appendString:@"分"];
-    [articleTitle appendString:@"]"];
+    if (self.article.category != nil || self.article.point)
+    {
+        [articleTitle appendString:@"   ["];
+
+        [articleTitle appendString:self.article.category];
+        [articleTitle appendString:@"]   ["];
+        [articleTitle appendString:self.article.point];
+        [articleTitle appendString:@"分"];
+        [articleTitle appendString:@"]"];
+    }
+
     
     CGFloat tableHeaderHeight = [ConstParameterAndMethod getArticleTitleHeight:articleTitle
                                                                      withWidth:self.tableView.frame.size.width
@@ -123,6 +129,15 @@
         NSString *topicId = [self.article.link stringByReplacingOccurrencesOfString:@"/topics/" withString:@""];
         [replyViewController setTopicId:topicId];
     }
+    
+    //AddToFavorite
+    if ([segue.identifier isEqualToString:@"AddToFavorite"])
+    {
+        AddFavoriteViewController *addFavoriteViewController = [segue destinationViewController];
+        addFavoriteViewController.strTitle = self.article.title;
+        addFavoriteViewController.strwebSite = self.article.completeLink;
+
+    }
 }
 
 //-----------------在IOS6下才有用
@@ -158,6 +173,20 @@
     // Use when fetching text data
     // NSLog(@"1--%@", request.url);
     NSString *responseString = [request responseString];
+    
+//    NSString* path = [[NSBundle mainBundle] pathForResource:@"error404"
+//                                                     ofType:@"txt"];
+//    responseString = [NSString stringWithContentsOfFile:path
+//                                                  encoding:NSUTF8StringEncoding
+//                                                     error:NULL];
+
+    
+    errorCode = [ConstParameterAndMethod isErrorPageWithHtml:responseString];
+    if (errorCode != nil)
+    {
+        [self.tableView reloadData];
+        return;
+    }
     
     NSError *error = nil;
     HTMLParser *parser = [[HTMLParser alloc] initWithString:responseString error:&error];
@@ -356,7 +385,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.replyLists.count == 0 && indexPath.row == 0)
+    if ((self.replyLists.count == 0 && indexPath.row == 0) || errorCode != nil)
 	{
         NSString *PlaceholderCellIdentifier = @"PlaceholderCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PlaceholderCellIdentifier];
@@ -367,8 +396,24 @@
             cell.detailTextLabel.textAlignment = UITextAlignmentCenter;
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"数据加载中…"];
+        if (errorCode != nil)
+        {
+            NSString *errorString = [NSString stringWithFormat:@"服务器发生错误%@",errorCode];
+
+            if ([errorCode isEqualToString:@"error500"])
+            {
+                errorString = @"服务器响应错误，error500";
+            }
+            else if ([errorCode isEqualToString:@"error404"])
+            {
+                errorString = @"该页面已经404，你懂的。。。。。。";
+            }
+            cell.detailTextLabel.text = errorString;
+            cell.detailTextLabel.textColor = [UIColor redColor];
+        }
+        else
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"数据加载中…"];
+
 		return cell; //记录为0则直接返回，只显示数据加载中…
     }
     //NSLog(@"%f",self.pv.progress);
@@ -581,6 +626,7 @@
                  [[PopupListComponentItem alloc] initWithCaption:@"回复帖子" image:nil itemId:1 showCaption:YES],
                  [[PopupListComponentItem alloc] initWithCaption:@"分享帖子" image:nil itemId:2 showCaption:YES],
                  [[PopupListComponentItem alloc] initWithCaption:temp image:nil itemId:3 showCaption:YES],
+                 [[PopupListComponentItem alloc] initWithCaption:@"收藏帖子" image:nil itemId:4 showCaption:YES],
                  nil];
     
     
@@ -590,7 +636,7 @@
     // Optional: store any object you want to have access to in the delegeate callback(s):
     popupList.userInfo = @"Value to hold on to";
     // Optional: override any default properties you want to change, such as:
-    popupList.textColor = [UIColor blueColor];
+    popupList.textColor = [UIColor whiteColor];
 
     [popupList showAnchoredTo:self.tableView inView:self.tableView withItems:listItems withDelegate:self];
     
@@ -655,6 +701,19 @@
         isOnlySeeAuthor = !isOnlySeeAuthor;
         [self.tableView reloadData];
 
+    }
+    else if (itemId == 4)
+    {
+        if (![ConstParameterAndMethod isUserLogin])
+        {
+            //创建对话框
+            UIAlertView * alertA= [[UIAlertView alloc] initWithTitle:@"" message:@"请先登录帐号。谢谢。" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            alertA.delegate = self;
+            //将这个UIAlerView 显示出来
+            [alertA show];
+        }
+        else
+        [self performSegueWithIdentifier:@"AddToFavorite" sender:self];
     }
     
     

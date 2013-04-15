@@ -12,7 +12,7 @@
 #import "HTMLParser.h"
 #import "ConstParameterAndMethod.h"
 
-@interface ReplyViewController ()
+@interface ReplyViewController () <UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UINavigationBar *topBar;
 @property (weak, nonatomic) IBOutlet UITextView *textViewContent;
 
@@ -25,15 +25,37 @@
 - (IBAction)replyTopic:(id)sender
 {
     [SVProgressHUD showWithStatus:@"正在回复..."];
+    
+    //self.topicId = @"asd";
 
-    NSString *urlString = [NSString stringWithFormat:@"http://bbs.csdn.net/posts?topic_id=%@",_topicId];
+    [self.textViewContent resignFirstResponder];
+    NSString *urlString = [NSString stringWithFormat:@"http://bbs.csdn.net/posts?topic_id=%@",self.topicId];
     ASIFormDataRequest *requestForm = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
     requestForm.delegate = self;
+    
+    
     [requestForm setPostValue:self.textViewContent.text forKey:@"post[body]"];
     [requestForm startAsynchronous];
     
    
 }
+
+
+//- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+//{ //Keyboard becomes visible
+//    
+//    self.textViewContent.frame = CGRectMake(self.textViewContent.frame.origin.x, self.textViewContent.frame.origin.y,
+//                                  self.textViewContent.frame.size.width, self.textViewContent.frame.size.height - 215 + 50); //resize
+//    return YES;
+//}
+//
+//- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+//{ //keyboard will hide
+//    self.textViewContent.frame = CGRectMake(self.textViewContent.frame.origin.x, self.textViewContent.frame.origin.y,
+//                                  self.textViewContent.frame.size.width, self.textViewContent.frame.size.height + 215 - 50); //resize
+//    return YES;
+//
+//}
 
 
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -47,9 +69,21 @@
     HTMLParser *parser = [[HTMLParser alloc] initWithString:responseString error:&error];
     if (error)
     {
+        
         [SVProgressHUD dismissWithError:@"回复失败，网络错误"];
         return;
     }
+    NSString *errorCode = [ConstParameterAndMethod isErrorPageWithHtml:responseString];
+    if (errorCode != nil)
+    {
+        [self.textViewContent resignFirstResponder];
+        NSString *errorString = [NSString stringWithFormat:@"服务器发生错误%@",errorCode];
+        
+        [SVProgressHUD dismissWithError:errorString afterDelay:3];
+
+        return;
+    }
+
     
     HTMLNode *body = [parser body];
     
@@ -62,6 +96,7 @@
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         [ud setObject:@"" forKey:COOKIE_USERNAME];
         [ud setObject:@"" forKey:COOKIE_USERINFO];
+        [ud setObject:@"" forKey:COOKIE_USERNICK];
         [ud synchronize];
         [self dismissModalViewControllerAnimated:YES];
         return;
@@ -106,8 +141,10 @@
     [super viewDidLoad];
     self.topBar.tintColor = [UIColor purpleColor];
     [self.textViewContent becomeFirstResponder];
-    
+
+
 }
+
 
 
 

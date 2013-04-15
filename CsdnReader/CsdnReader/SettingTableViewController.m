@@ -183,7 +183,11 @@ static bool isUserLoginTemp = NO;
                 NSString *version = [ConstParameterAndMethod GetAppVersion];
                 [mc setSubject:[NSString stringWithFormat:@"CSDN论坛阅读器%@意见反馈",version] ];
                 [self presentModalViewController:mc animated:YES];
-            }            
+            }
+            else
+            {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
         }
     }
     

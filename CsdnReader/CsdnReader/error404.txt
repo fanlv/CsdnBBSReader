@@ -1,0 +1,25 @@
+<html>
+<body>
+<!--top-->
+<script src="http://csdnimg.cn/pubnav/js/pub_topnav_2011.js"type="text/javascript"></script>
+<!---->
+<div class="full">	
+		<dl class="error">
+			<dt><img src="http://csdnimg.cn/www/images/pic_dot_jz.gif" alt="CSDN 提示页面" title="CSDN 提示页面"></dt>
+			<dd>
+				<span class="error404"><img src="http://csdnimg.cn/www/images/pic_dot_jz.gif" alt="404" title="404"></span>
+				<span class="error_404_text"><img src="http://csdnimg.cn/www/images/pic_dot_jz.gif" alt="你懂的" title="你懂的"></span>
+			</dd>
+            <dd style="font-size:19px; font-family:Microsoft YaHei;">
+            	还有很多小孩也没找到,你愿意帮助他们么?
+            </dd>
+			<dd>
+				<span class="btn_back"><a href="/" ><img src="http://csdnimg.cn/www/images/pic_dot_jz.gif" alt="返回" title="返回"></a></span> 
+                <span class="btn_back_yibo"><a href="http://yibo.iyiyun.com/js/yibo404" target="_blank"><img src="http://csdnimg.cn/www/images/pic_dot.gif" alt="公益寻人" title="公益寻人"></a></span>
+			</dd>
+		</dl>
+	</div>
+<!--foot-->
+<script src="http://csdnimg.cn/pubfooter/js/publib_footer.js"type="text/javascript"></script>
+</body>
+</html>

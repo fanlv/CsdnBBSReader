@@ -59,7 +59,7 @@
     [spinner startAnimating];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     [self.coustomPullToRefresh startRefresh];
-    [ConstParameterAndMethod setDataSourceWithGetWebSiteHtmlWithOutCookie:urlWithOutPage andSetDelegate:self];
+    [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:urlWithOutPage andSetDelegate:self];
 
 }
 
@@ -78,7 +78,7 @@
         NSDictionary *bbsUrlList = [ConstParameterAndMethod BBSUrlList];
         urlWithOutPage = [bbsUrlList objectForKey:self.navigationItem.title];
         page = 1;
-        [ConstParameterAndMethod setDataSourceWithGetWebSiteHtmlWithOutCookie:urlWithOutPage andSetDelegate:self];
+        [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:urlWithOutPage andSetDelegate:self];
         
     }
     
@@ -398,7 +398,7 @@
     //[spinner stopAnimating];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     //[self.coustomPullToRefresh startRefresh];
-    [ConstParameterAndMethod setDataSourceWithGetWebSiteHtmlWithOutCookie:webSiteUrl andSetDelegate:self];
+    [ConstParameterAndMethod setDataSourceWithWebSiteHtmlWithCookie:webSiteUrl andSetDelegate:self];
 }
 
 - (void)viewDidUnload { 

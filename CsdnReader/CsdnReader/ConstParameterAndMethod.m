@@ -8,6 +8,7 @@
 
 #import "ConstParameterAndMethod.h"
 #import "ASIHTTPRequest.h"
+#import "HTMLParser.h"
 
 @implementation ConstParameterAndMethod
 
@@ -78,6 +79,7 @@
     {
         _bbsUrlList = [[NSMutableDictionary alloc] init];
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/DotNET"         forKey:@".NET"];
+        
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Java"           forKey:@"JAVA"];
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/WebDevelop"     forKey:@"WEB开发"];
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/MSSQL"          forKey:@"MS-SQL"];
@@ -95,7 +97,22 @@
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Other"          forKey:@"扩充话题"];
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Support"        forKey:@"社区支持"];
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Windows"        forKey:@"Windows社区"];
+        
+        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        NSString *userName = [ud objectForKey:COOKIE_USERNAME];
+        //http://bbs.csdn.net/users/f800051235/topics
+        
+        NSString *tmpUrl = [NSString stringWithFormat:@"http://bbs.csdn.net/users/%@/topics",userName];
+        
+        [_bbsUrlList setObject:tmpUrl                                       forKey:@"我发布的帖子"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/user/pointed_topics"   forKey:@"我得分的帖子"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/user/replied_topics"   forKey:@"我回复的帖子"];
+        
+
     }
+    
+    
     return _bbsUrlList;
 }
 
@@ -105,13 +122,39 @@
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     NSString *userName = [ud objectForKey:COOKIE_USERNAME];
     NSString *userInfo = [ud objectForKey:COOKIE_USERINFO];
-    
-    if (userInfo.length == 0 || userName.length == 0)
+    NSString *userNick = [ud objectForKey:COOKIE_USERNICK];
+
+    if (userInfo.length == 0 || userName.length == 0 || userNick.length == 0)
         return NO;
     else
         return YES;
 }
 
++ (NSString *)isErrorPageWithHtml:(NSString *)htmlContent
+{
+    
+    
+    NSError *error = nil;
+    HTMLParser *parser = [[HTMLParser alloc] initWithString:htmlContent error:&error];
+    if (error)
+    {
+        return NO;
+    }
+    HTMLNode *bodyNode = [parser body];
+    
+    HTMLNode *fullNode = [bodyNode findChildOfClass:@"full"];
+    
+    HTMLNode *errorNode = [fullNode findChildOfClass:@"error"];
+    
+    NSArray *spanArray = [errorNode findChildTags:@"span"];
+    
+    HTMLNode *spanErrorNode = [spanArray objectAtIndex:0];
+    
+    NSString *errorCode = [spanErrorNode getAttributeNamed:@"class"];
+    
+    //HTMLNode *errorNode = [bodyNode findChildOfClass:@"error404"];
+    return errorCode;
+}
 
 
 
@@ -129,50 +172,69 @@
     [request startAsynchronous];
 }
 
-+ (void)setDataSourceWithGetWebSiteHtmlWithOutCookie:(NSString *)webSite andSetDelegate:(id)delegate
-{
-    NSURL *url2 = [NSURL URLWithString:webSite];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url2];
-    [request setShowAccurateProgress:YES];
-    [request setDelegate:delegate];
-    [request startAsynchronous];
-}
+//+ (void)setDataSourceWithGetWebSiteHtmlWithOutCookie:(NSString *)webSite andSetDelegate:(id)delegate
+//{
+//    NSURL *url2 = [NSURL URLWithString:webSite];
+//    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url2];
+//    [request setRequestMethod:@"GET"];
+//
+//    [request addRequestHeader:@"Referer" value:@"http://so.csdn.net/"];
+//
+//    
+//    [request setDelegate:delegate];
+//    
+//    [request startAsynchronous];
+//}
 
 + (void)setDataSourceWithWebSiteHtmlWithCookie:(NSString *)webSite andSetDelegate:(id)delegate
 {    
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     NSString *userName = [ud objectForKey:COOKIE_USERNAME];
     NSString *userInfo = [ud objectForKey:COOKIE_USERINFO];
+    NSString *userNick = [ud objectForKey:COOKIE_USERNICK];
 
-    if (userInfo == nil || userName == nil)
+    if (userInfo == nil || userName == nil || userNick == nil)
     {
         userName = @"";
         userInfo = @"";
+        userNick = @"";
     }
         
-    NSDictionary *properties2 = [[NSMutableDictionary alloc] init];
-    [properties2 setValue:COOKIE_USERNAME  forKey:NSHTTPCookieName];
-    [properties2 setValue:userName forKey:NSHTTPCookieValue];
-    [properties2 setValue:@".csdn.net" forKey:NSHTTPCookieDomain];
-    [properties2 setValue:@"/" forKey:NSHTTPCookiePath];
-    NSHTTPCookie *cookie2 = [[NSHTTPCookie alloc] initWithProperties:properties2];
+    NSDictionary *propertiesUserName = [[NSMutableDictionary alloc] init];
+    [propertiesUserName setValue:COOKIE_USERNAME  forKey:NSHTTPCookieName];
+    [propertiesUserName setValue:userName forKey:NSHTTPCookieValue];
+    [propertiesUserName setValue:@".csdn.net" forKey:NSHTTPCookieDomain];
+    [propertiesUserName setValue:@"/" forKey:NSHTTPCookiePath];
+    NSHTTPCookie *cookieUserName = [[NSHTTPCookie alloc] initWithProperties:propertiesUserName];
         
-    NSDictionary *properties3 = [[NSMutableDictionary alloc] init];
-    [properties3 setValue:COOKIE_USERINFO  forKey:NSHTTPCookieName ];
-    [properties3 setValue:userInfo forKey:NSHTTPCookieValue];
-    [properties3 setValue:@".csdn.net" forKey:NSHTTPCookieDomain];
-    [properties3 setValue:@"/" forKey:NSHTTPCookiePath];
-    NSHTTPCookie *cookie3 = [[NSHTTPCookie alloc] initWithProperties:properties3];
+    NSDictionary *propertiesUserInfo = [[NSMutableDictionary alloc] init];
+    [propertiesUserInfo setValue:COOKIE_USERINFO  forKey:NSHTTPCookieName ];
+    [propertiesUserInfo setValue:userInfo forKey:NSHTTPCookieValue];
+    [propertiesUserInfo setValue:@".csdn.net" forKey:NSHTTPCookieDomain];
+    [propertiesUserInfo setValue:@"/" forKey:NSHTTPCookiePath];
+    NSHTTPCookie *cookieUserInfo = [[NSHTTPCookie alloc] initWithProperties:propertiesUserInfo];
     
+    NSDictionary *propertiesUserNick = [[NSMutableDictionary alloc] init];
+    [propertiesUserNick setValue:COOKIE_USERINFO  forKey:NSHTTPCookieName ];
+    [propertiesUserNick setValue:userNick forKey:NSHTTPCookieValue];
+    [propertiesUserNick setValue:@".csdn.net" forKey:NSHTTPCookieDomain];
+    [propertiesUserNick setValue:@"/" forKey:NSHTTPCookiePath];
+    NSHTTPCookie *cookieUserNick = [[NSHTTPCookie alloc] initWithProperties:propertiesUserNick];
+    
+
+
     //This url will return the value of the 'ASIHTTPRequestTestCookie' cookie
     NSURL *url = [NSURL URLWithString:webSite];
     ASIHTTPRequest  *request = [ASIHTTPRequest requestWithURL:url];
+
     [request setDelegate:delegate];
     
     NSMutableArray *cookiesArray = [[NSMutableArray alloc] init];
-    [cookiesArray addObject:cookie2];
-    [cookiesArray addObject:cookie3];
-    // [cookiesArray addObject:cookie4];
+    [cookiesArray addObject:cookieUserName];
+    [cookiesArray addObject:cookieUserInfo];
+    [cookiesArray addObject:cookieUserNick];
+    
+    
     
     [request setUseCookiePersistence:NO];
     [request setRequestCookies:cookiesArray];
