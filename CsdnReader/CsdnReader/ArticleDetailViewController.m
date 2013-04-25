@@ -484,9 +484,10 @@
     webView.frame = frame;
     //webView.delegate = self;
     [webView loadHTMLString:reply.rawContents baseURL:nil];
+    //[webView sizeToFit];
     //webView.sizeThatFits = YES;
     //webView.scrollView.scrollEnabled = NO;
-    
+    webView.scrollView.bounces = NO;
     
     if (reply.imageView == nil)
     {
@@ -664,37 +665,44 @@
     }
     else if (itemId == 2)
     {
+        
+        
+        id<ISSShareOptions> shareOptions = [ShareSDK simpleShareOptionsWithTitle:@"Csdn阅读器" shareViewDelegate:nil];
+
         NSString *shareContent = [NSString stringWithFormat:@"%@,%@  #CSDN阅读器#",self.article.title,self.article.completeLink];
-        id<ISSPublishContent> publishContent = [ShareSDK publishContent:shareContent
-                                                         defaultContent:@""
-                                                                  image:nil//[UIImage imageNamed:@"share11.jpg"]
-                                                           imageQuality:0
-                                                              mediaType:SSPublishContentMediaTypeText
-                                                                  title:@"ShareSDK"
-                                                                    url:@""
-                                                           musicFileUrl:nil
-                                                                extInfo:nil
-                                                               fileData:nil];
-        [ShareSDK showShareActionSheet:self
+        
+        
+        
+        
+        //构造分享内容
+        id<ISSContent> publishContent = [ShareSDK content:shareContent
+                                           defaultContent:@""
+                                                    image:nil//[ShareSDK imageWithPath:imagePath]
+                                                    title:@"CSDN阅读器"
+                                                      url:@""
+                                              description:@"这是一条测试信息"
+                                                mediaType:SSPublishContentMediaTypeNews];
+        
+        [ShareSDK showShareActionSheet:nil
                              shareList:nil
                                content:publishContent
                          statusBarTips:YES
-                       oneKeyShareList:[NSArray defaultOneKeyShareList]
-                              autoAuth:YES
-                            convertUrl:YES
-                        shareViewStyle:ShareViewStyleSimple
-                        shareViewTitle:@"内容分享"
-                                result:^(ShareType type, SSPublishContentState state, id<ISSStatusInfo>
-                                         statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                           authOptions:nil
+                          shareOptions: shareOptions
+                                result:^(ShareType type, SSPublishContentState state, id<ISSStatusInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
                                     if (state == SSPublishContentStateSuccess)
                                     {
-                                        NSLog(@"分享成功!");
+                                        NSLog(@"分享成功");
                                     }
-                                    else if(state == SSPublishContentStateFail)
+                                    else if (state == SSPublishContentStateFail)
                                     {
-                                        NSLog(@"分享失败!");
+                                        NSLog(@"分享失败,错误码:%d,错误描述:%@", [error errorCode],  [error errorDescription]);
                                     }
                                 }];
+
+        
+        
+        
     }
     else if (itemId == 3)
     {

@@ -19,7 +19,7 @@
     UITabBarItem *tabBarItem2=[tabBarController.tabBar.items objectAtIndex:1];
     UITabBarItem *tabBarItem3=[tabBarController.tabBar.items objectAtIndex:2];
     
-        
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     tabBarItem1.title = [ConstParameterAndMethod FirstBBSBoard];
     //tabBarItem1.image = [UIImage imageNamed:@"57.png"];
     tabBarItem2.title = [ConstParameterAndMethod SecondBBSBoard];
