@@ -9,19 +9,36 @@
 #import "SettingTableViewController.h"
 #import "ConstParameterAndMethod.h"
 #import "BBSBoardConfigViewController.h"
+#import "InfColorPickerController.h"
 #import <MessageUI/MFMailComposeViewController.h>
 #import <ShareSDK/ShareSDK.h>
 
 
 
 
-@interface SettingTableViewController ()<MFMailComposeViewControllerDelegate>
+@interface SettingTableViewController ()<MFMailComposeViewControllerDelegate,InfColorPickerControllerDelegate>
+
+
 
 @end
 
 
 @implementation SettingTableViewController
 
+
+
+
+#pragma mark - Property
+
+const int pickerViewTag = 100;
+const int skinTag = 3;
+const int feedbackTag = 4;
+
+
+
+
+
+#pragma mark - Life Cycle
 
 
 static bool isUserLoginTemp = NO;
@@ -33,23 +50,19 @@ static bool isUserLoginTemp = NO;
         [self.tableView reloadData];
         [ConstParameterAndMethod RefreshTabBarController:self.tabBarController];
     }
-
+    if (self.navigationController.navigationBar.tintColor != [ConstParameterAndMethod getUserSaveColor])
+    {
+        self.navigationController.navigationBar.tintColor = [ConstParameterAndMethod getUserSaveColor];
+    }
 
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationController.navigationBar.tintColor = [UIColor purpleColor];
     self.navigationItem.title = @"设置";
     isUserLoginTemp = [ConstParameterAndMethod isUserLogin];
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 #pragma mark - Table view data source
 
@@ -68,7 +81,7 @@ static bool isUserLoginTemp = NO;
             return 1;
     
     }
-    return 5;
+    return 6;
 }
 
 
@@ -87,10 +100,13 @@ static bool isUserLoginTemp = NO;
             case 2:
                 cell.detailTextLabel.text = [ConstParameterAndMethod ThridBBSBoard];
                 break;
-            case 3:
+            case skinTag:
                 cell.detailTextLabel.text = @"";
                 break;
-            case 4:
+            case feedbackTag:
+                cell.detailTextLabel.text = @"";
+                break;
+            case 5:
             {
 
                 NSString *version = [ConstParameterAndMethod GetAppVersion];
@@ -139,6 +155,27 @@ static bool isUserLoginTemp = NO;
     }
 }
 
+#pragma mark - InfColorPickerController delegate
+
+
+- (void) colorPickerControllerDidFinish: (InfColorPickerController*) picker
+{
+
+    
+
+    
+	[self dismissModalViewControllerAnimated: YES];
+    if (picker.resultColor != self.navigationController.navigationBar.tintColor)
+    {
+        //self.tabBarController.tabBar.tintColor = picker.resultColor;
+        self.navigationController.navigationBar.tintColor = picker.resultColor;
+        [ConstParameterAndMethod saveColor:picker.resultColor];
+        //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    }
+    
+}
+
+
 #pragma mark - Mail delegate
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller
@@ -166,16 +203,26 @@ static bool isUserLoginTemp = NO;
 
 #pragma mark - Table view delegate
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     if (indexPath.section == 0)
     {
-        if (indexPath.row < 3)
+        if (indexPath.row < skinTag)
         {
             [self performSegueWithIdentifier:@"ConfigBBSBoard" sender:self];
         }
-        else if (indexPath.row == 3)
+        else if (indexPath.row == skinTag)
+        {
+            InfColorPickerController* picker = [ InfColorPickerController colorPickerViewController ];
+            
+            picker.sourceColor = self.navigationController.navigationBar.tintColor;
+            picker.delegate = self;
+            [picker presentModallyOverViewController: self];
+
+        }
+        else if (indexPath.row == feedbackTag)
         {
             MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
               if (mc != nil)

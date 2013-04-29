@@ -13,6 +13,7 @@
 #import "HTMLParser.h"
 #import "SSCheckBoxView.h"
 #import "UIHelpers.h"
+#import "ConstParameterAndMethod.h"
 
 @interface AddFavoriteViewController ()
 
@@ -54,6 +55,11 @@
 	[super viewWillAppear:animated];
 	keyBoardController=[[UIKeyboardViewController alloc] initWithControllerDelegate:self];
 	[keyBoardController addToolbarToKeyboard];
+    if (self.topBar.tintColor != [ConstParameterAndMethod getUserSaveColor])
+    {
+        self.topBar.tintColor = [ConstParameterAndMethod getUserSaveColor];
+    }
+    
 }
 
 
@@ -62,12 +68,12 @@
 {
 	[super viewWillDisappear:animated];
     keyBoardController = nil;
+    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.topBar.tintColor = [UIColor purpleColor];
     self.tfDescription.layer.borderColor = [UIColor grayColor].CGColor;
     self.tfDescription.layer.borderWidth =1.0;
     self.tfDescription.layer.cornerRadius =5.0;

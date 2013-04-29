@@ -139,13 +139,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.topBar.tintColor = [UIColor purpleColor];
     [self.textViewContent becomeFirstResponder];
 
 
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (self.topBar.tintColor != [ConstParameterAndMethod getUserSaveColor])
+    {
+        self.topBar.tintColor = [ConstParameterAndMethod getUserSaveColor];
+    }
+}
 
 
 - (void)viewDidUnload {

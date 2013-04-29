@@ -65,6 +65,12 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if (self.navigationController.navigationBar.tintColor != [ConstParameterAndMethod getUserSaveColor])
+    {
+        self.navigationController.navigationBar.tintColor = [ConstParameterAndMethod getUserSaveColor];
+        //self.tabBarController.tabBar.tintColor = self.navigationController.navigationBar.tintColor ;
+    }
+    
     if (![self.navigationItem.title isEqualToString:self.tabBarController.tabBar.selectedItem.title])
     {
         if (articleLists.count != 0)
@@ -93,7 +99,6 @@
 {
     [super viewDidLoad];
     coustomPullToRefresh = [[CustomPullToRefresh alloc] initWithScrollView:self.tableView delegate:self];
-    self.navigationController.navigationBar.tintColor = [UIColor purpleColor];
     //---设置左上角按钮
     self.navigationItem.rightBarButtonItem = self.refreshButton;
 }

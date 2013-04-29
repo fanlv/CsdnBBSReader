@@ -52,6 +52,14 @@
 		E50D583316B10F33005CF3D8 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = E50D583216B10F33005CF3D8 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E50D584616B132E4005CF3D8 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E50D584416B132E4005CF3D8 /* SVProgressHUD.m */; };
 		E50D584716B132E4005CF3D8 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E50D584516B132E4005CF3D8 /* SVProgressHUD.bundle */; };
+		E515A759172D0F4E00A766E2 /* InfColorBarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = E515A74C172D0F4E00A766E2 /* InfColorBarPicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E515A75A172D0F4E00A766E2 /* InfColorIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E515A74E172D0F4E00A766E2 /* InfColorIndicatorView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E515A75B172D0F4E00A766E2 /* InfColorPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = E515A751172D0F4E00A766E2 /* InfColorPickerController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E515A75C172D0F4E00A766E2 /* InfColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E515A752172D0F4E00A766E2 /* InfColorPickerView.xib */; };
+		E515A75D172D0F4E00A766E2 /* InfColorSquarePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = E515A754172D0F4E00A766E2 /* InfColorSquarePicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E515A75E172D0F4E00A766E2 /* InfHSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = E515A756172D0F4E00A766E2 /* InfHSBSupport.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E515A75F172D0F4E00A766E2 /* InfSourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E515A758172D0F4E00A766E2 /* InfSourceColorView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E515A762172D1E9300A766E2 /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = E515A761172D1E9300A766E2 /* test.m */; };
 		E5184E261703ED9400C84966 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5184E251703ED9400C84966 /* QuartzCore.framework */; };
 		E5184E9E1704236A00C84966 /* PopupListComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = E5184E8C1704236A00C84966 /* PopupListComponent.m */; };
 		E5184E9F1704236A00C84966 /* popoverArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = E5184E8F1704236A00C84966 /* popoverArrowDown.png */; };
@@ -238,6 +246,22 @@
 		E50D584316B132E4005CF3D8 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		E50D584416B132E4005CF3D8 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		E50D584516B132E4005CF3D8 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		E515A74B172D0F4E00A766E2 /* InfColorBarPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorBarPicker.h; sourceTree = "<group>"; };
+		E515A74C172D0F4E00A766E2 /* InfColorBarPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorBarPicker.m; sourceTree = "<group>"; };
+		E515A74D172D0F4E00A766E2 /* InfColorIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorIndicatorView.h; sourceTree = "<group>"; };
+		E515A74E172D0F4E00A766E2 /* InfColorIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorIndicatorView.m; sourceTree = "<group>"; };
+		E515A74F172D0F4E00A766E2 /* InfColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPicker.h; sourceTree = "<group>"; };
+		E515A750172D0F4E00A766E2 /* InfColorPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerController.h; sourceTree = "<group>"; };
+		E515A751172D0F4E00A766E2 /* InfColorPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerController.m; sourceTree = "<group>"; };
+		E515A752172D0F4E00A766E2 /* InfColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfColorPickerView.xib; sourceTree = "<group>"; };
+		E515A753172D0F4E00A766E2 /* InfColorSquarePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorSquarePicker.h; sourceTree = "<group>"; };
+		E515A754172D0F4E00A766E2 /* InfColorSquarePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorSquarePicker.m; sourceTree = "<group>"; };
+		E515A755172D0F4E00A766E2 /* InfHSBSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfHSBSupport.h; sourceTree = "<group>"; };
+		E515A756172D0F4E00A766E2 /* InfHSBSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfHSBSupport.m; sourceTree = "<group>"; };
+		E515A757172D0F4E00A766E2 /* InfSourceColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfSourceColorView.h; sourceTree = "<group>"; };
+		E515A758172D0F4E00A766E2 /* InfSourceColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfSourceColorView.m; sourceTree = "<group>"; };
+		E515A760172D1E9300A766E2 /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
+		E515A761172D1E9300A766E2 /* test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test.m; sourceTree = "<group>"; };
 		E5184E251703ED9400C84966 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E5184E8B1704236A00C84966 /* PopupListComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupListComponent.h; sourceTree = "<group>"; };
 		E5184E8C1704236A00C84966 /* PopupListComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupListComponent.m; sourceTree = "<group>"; };
@@ -474,6 +498,8 @@
 				E51D32C616AA8A920007DCBE /* Article.m */,
 				E5A097CC16ABF31F007E1600 /* Reply.h */,
 				E5A097CD16ABF31F007E1600 /* Reply.m */,
+				E515A760172D1E9300A766E2 /* test.h */,
+				E515A761172D1E9300A766E2 /* test.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -481,6 +507,7 @@
 		E506635616AEB75F00328205 /* HelpClass */ = {
 			isa = PBXGroup;
 			children = (
+				E515A74A172D0F4E00A766E2 /* InfColorPicker */,
 				E50D483C171BFF67005A6703 /* ShareSDK_v2.0.0 */,
 				E56960CC171411DE0025BA21 /* SSCheckBoxView */,
 				E56960C41713BA5F0025BA21 /* UIKeyboard */,
@@ -598,6 +625,27 @@
 				E50D584516B132E4005CF3D8 /* SVProgressHUD.bundle */,
 			);
 			name = SVProgressHUD;
+			sourceTree = "<group>";
+		};
+		E515A74A172D0F4E00A766E2 /* InfColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				E515A74B172D0F4E00A766E2 /* InfColorBarPicker.h */,
+				E515A74C172D0F4E00A766E2 /* InfColorBarPicker.m */,
+				E515A74D172D0F4E00A766E2 /* InfColorIndicatorView.h */,
+				E515A74E172D0F4E00A766E2 /* InfColorIndicatorView.m */,
+				E515A74F172D0F4E00A766E2 /* InfColorPicker.h */,
+				E515A750172D0F4E00A766E2 /* InfColorPickerController.h */,
+				E515A751172D0F4E00A766E2 /* InfColorPickerController.m */,
+				E515A752172D0F4E00A766E2 /* InfColorPickerView.xib */,
+				E515A753172D0F4E00A766E2 /* InfColorSquarePicker.h */,
+				E515A754172D0F4E00A766E2 /* InfColorSquarePicker.m */,
+				E515A755172D0F4E00A766E2 /* InfHSBSupport.h */,
+				E515A756172D0F4E00A766E2 /* InfHSBSupport.m */,
+				E515A757172D0F4E00A766E2 /* InfSourceColorView.h */,
+				E515A758172D0F4E00A766E2 /* InfSourceColorView.m */,
+			);
+			path = InfColorPicker;
 			sourceTree = "<group>";
 		};
 		E5184E8A1704236A00C84966 /* PopupListComponent */ = {
@@ -1083,6 +1131,7 @@
 				E50D4882171BFF67005A6703 /* ShareSDKiPadSimpleShareViewUI.bundle in Resources */,
 				E50D4885171BFF67005A6703 /* ShareSDKiPhoneDefaultShareViewUI.bundle in Resources */,
 				E50D4887171BFF67005A6703 /* ShareSDKiPhoneSimpleShareViewUI.bundle in Resources */,
+				E515A75C172D0F4E00A766E2 /* InfColorPickerView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1134,6 +1183,13 @@
 				E56960FB171411DE0025BA21 /* UIHelpers.m in Sources */,
 				E56960FC171411DE0025BA21 /* SSCheckBoxView.m in Sources */,
 				E5527687171516410001CA9A /* SearchViewController.m in Sources */,
+				E515A759172D0F4E00A766E2 /* InfColorBarPicker.m in Sources */,
+				E515A75A172D0F4E00A766E2 /* InfColorIndicatorView.m in Sources */,
+				E515A75B172D0F4E00A766E2 /* InfColorPickerController.m in Sources */,
+				E515A75D172D0F4E00A766E2 /* InfColorSquarePicker.m in Sources */,
+				E515A75E172D0F4E00A766E2 /* InfHSBSupport.m in Sources */,
+				E515A75F172D0F4E00A766E2 /* InfSourceColorView.m in Sources */,
+				E515A762172D1E9300A766E2 /* test.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,6 +17,8 @@
 #define COOKIE_USERINFO       @"UserInfo"
 #define COOKIE_USERNICK       @"UserNick"
 
+#define USER_SAVE_COLOR       @"UserColor"
+
 #define FIRST_BBS_BOARD       @"FirstBBSBoard"
 #define SECOND_BBS_BOARD      @"SecondBBSBoard"
 #define THRID_BBS_BOARD       @"ThridBBSBoard"
@@ -38,6 +40,11 @@
 + (NSString *)ThridBBSBoard;
 
 + (NSString *)GetAppVersion;
+
+
++ (void)saveColor:(UIColor *)color;
+
++ (UIColor *)getUserSaveColor;
 
 
 + (BOOL)isUserLogin;

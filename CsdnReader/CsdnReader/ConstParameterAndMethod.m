@@ -71,6 +71,27 @@
 }
 
 
++ (void)saveColor:(UIColor *)color
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
+    NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:color];
+    [ud setObject:colorData forKey:USER_SAVE_COLOR];
+    [ud synchronize];
+}
+
++ (UIColor *)getUserSaveColor
+{
+    NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:USER_SAVE_COLOR];
+    
+    if (colorData == nil)
+    {
+        return [UIColor blackColor];
+    }
+    UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+    return color;
+}
+
 
 + (NSDictionary *)BBSUrlList
 {
@@ -160,6 +181,9 @@
 
 + (void)loginCsdnBbsWithUserName:(NSString *)userName andPassWord:(NSString *)passWord andSetDelegate:(id)delegate
 {
+    
+    userName = [userName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
     NSString *getCookieUrl = [NSString stringWithFormat:
                               @"https://passport.csdn.net/ajax/accounthandler.ashx?t=log&u=%@&p=%@&remember=1&f=h&rand=0.6"
                               ,userName,passWord];

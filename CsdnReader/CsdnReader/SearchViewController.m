@@ -43,7 +43,6 @@
     [super viewDidLoad];
     //self.navigationController.navigationBar.hidden = YES
     coustomPullToRefresh = [[CustomPullToRefresh alloc] initWithScrollView:self.tableView delegate:self];
-    self.searchBar.tintColor = [UIColor purpleColor];
     [self.searchBar becomeFirstResponder];
     self.searchBar.showsCancelButton = YES;
     
@@ -67,8 +66,15 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+
+    if (self.searchBar.tintColor != [ConstParameterAndMethod getUserSaveColor])
+    {
+        self.searchBar.tintColor = [ConstParameterAndMethod getUserSaveColor];
+    }
+    
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
