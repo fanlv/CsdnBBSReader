@@ -128,7 +128,6 @@
     NSString *errorDetail = [error.userInfo objectForKey:@"NSLocalizedDescription"];
     NSLog(@"Error: %@", errorDetail);
     [SVProgressHUD dismissWithError:@"网络异常，回复失败。"];
-
 }
 
 - (IBAction)cancel:(id)sender
@@ -140,8 +139,6 @@
 {
     [super viewDidLoad];
     [self.textViewContent becomeFirstResponder];
-
-
 }
 
 
@@ -155,7 +152,8 @@
 }
 
 
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
     [self setTopBar:nil];
     [self setTextViewContent:nil];
     [super viewDidUnload];

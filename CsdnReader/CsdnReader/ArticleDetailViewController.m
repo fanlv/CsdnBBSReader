@@ -48,14 +48,12 @@
     if (self.navigationController.navigationBar.tintColor != [ConstParameterAndMethod getUserSaveColor])
     {
         self.navigationController.navigationBar.tintColor = [ConstParameterAndMethod getUserSaveColor];
-        //self.tabBarController.tabBar.tintColor = self.navigationController.navigationBar.tintColor ;
     }
 
     if (![ConstParameterAndMethod isUserLogin])
     {
         self.replyButton.enabled = NO;
         self.replyButton.title = @"请先登录";
-
     }
     else
     {
