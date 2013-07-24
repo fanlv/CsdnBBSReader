@@ -44,7 +44,8 @@
     
     //添加搜狐微博应用
     [ShareSDK connectSohuWeiboWithConsumerKey:@"SAfmTG1blxZY3HztESWx"
-                               consumerSecret:@"yfTZf)!rVwh*3dqQuVJVsUL37!F)!yS9S!Orcsij"];
+                               consumerSecret:@"yfTZf)!rVwh*3dqQuVJVsUL37!F)!yS9S!Orcsij"
+                                  redirectUri:@"http://www.sharesdk.cn"];
     
     //添加豆瓣应用
     [ShareSDK connectDoubanWithAppKey:@"07d08fbfc1210e931771af3f43632bb9"
