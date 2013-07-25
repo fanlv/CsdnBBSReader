@@ -1278,6 +1278,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zhibing Zhang (7PTQ26NCQN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhibing Zhang (7PTQ26NCQN)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/CsdnReader/ShareSDK_v2.0.0/Connection\"",
@@ -1297,7 +1298,8 @@
 					"\"$(SRCROOT)/CsdnReader/ShareSDK_v2.0.0/Extend/SDKExport\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "999528C8-C9DC-4E9C-9DDF-1EC68AF02BF7";
+				PROVISIONING_PROFILE = "6AA76987-20DF-49C9-9B48-CE28F5BE4602";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6AA76987-20DF-49C9-9B48-CE28F5BE4602";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -1308,6 +1310,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zhibing Zhang (7PTQ26NCQN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhibing Zhang (7PTQ26NCQN)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/CsdnReader/ShareSDK_v2.0.0/Connection\"",
@@ -1327,7 +1330,8 @@
 					"\"$(SRCROOT)/CsdnReader/ShareSDK_v2.0.0/Extend/SDKExport\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "999528C8-C9DC-4E9C-9DDF-1EC68AF02BF7";
+				PROVISIONING_PROFILE = "6AA76987-20DF-49C9-9B48-CE28F5BE4602";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6AA76987-20DF-49C9-9B48-CE28F5BE4602";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;

@@ -118,6 +118,8 @@
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Other"          forKey:@"扩充话题"];
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Support"        forKey:@"社区支持"];
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/Windows"        forKey:@"Windows社区"];
+        [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/PHP"            forKey:@"PHP"];
+
         
         
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];

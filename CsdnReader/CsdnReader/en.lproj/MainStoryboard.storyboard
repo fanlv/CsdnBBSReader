@@ -725,7 +725,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LRW-hp-eVI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="319" y="1353"/>
+            <point key="canvasLocation" x="128" y="1393"/>
         </scene>
         <!--Board Config View Controller-->
         <scene sceneID="H1z-3G-B4j">
@@ -783,6 +783,7 @@
         <class className="AddFavoriteViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/AddFavoriteViewController.h"/>
             <relationships>
+                <relationship kind="action" name="cancel:"/>
                 <relationship kind="action" name="saveBtnClick:"/>
                 <relationship kind="outlet" name="tfDescription" candidateClass="UITextView"/>
                 <relationship kind="outlet" name="tfTag" candidateClass="UITextField"/>
@@ -794,6 +795,7 @@
         <class className="ArticleDetailViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ArticleDetailViewController.h"/>
             <relationships>
+                <relationship kind="action" name="moreButtonClick:"/>
                 <relationship kind="outlet" name="replyButton" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
