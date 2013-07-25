@@ -121,7 +121,6 @@
         [_bbsUrlList setObject:@"http://bbs.csdn.net/forums/PHP"            forKey:@"PHP"];
 
         
-        
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         NSString *userName = [ud objectForKey:COOKIE_USERNAME];
         //http://bbs.csdn.net/users/f800051235/topics
