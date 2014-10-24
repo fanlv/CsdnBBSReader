@@ -1,0 +1,38 @@
+//
+//  CsdnReader2-Prefix.pch
+//  CsdnReader2
+//
+//  Created by Fan Lv on 14-10-14.
+//  Copyright (c) 2014年 Fanlv. All rights reserved.
+//
+
+#ifndef CsdnReader2_CsdnReader2_Prefix_pch
+#define CsdnReader2_CsdnReader2_Prefix_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif
+
+
+
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "Constants.h"
+
+#endif
+
+// NSLog control
+#if 1 // 1 enable NSLog, 0 disable NSLog
+#define NSLog(FORMAT, ...) fprintf(stderr,"[%s:%d]\t%s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#else
+#define NSLog(FORMAT, ...) nil
+#endif
