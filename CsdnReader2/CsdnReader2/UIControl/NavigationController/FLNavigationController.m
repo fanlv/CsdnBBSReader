@@ -12,11 +12,11 @@
 #define MainScreenHeight [UIScreen mainScreen].bounds.size.height
 #define MainScreenWidth [UIScreen mainScreen].bounds.size.width
 
+
 @interface FLNavigationController ()<UIGestureRecognizerDelegate> {
     CGPoint startPoint;
     
     UIImageView *lastScreenShotView;// view
-    
 }
 
 @property (nonatomic, strong) UIView *backGroundView;
@@ -53,7 +53,7 @@ static CGFloat min_distance = 100;// 最小回弹距离
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self
                                                                                 action:@selector(paningGestureReceive:)];
     [recognizer delaysTouchesBegan];
@@ -94,7 +94,7 @@ static CGFloat min_distance = 100;// 最小回弹距离
     
     lastScreenShotView = [[UIImageView alloc] initWithImage:lastScreenShot];
     
-    lastScreenShotView.frame = (CGRect){-(MainScreenWidth*offset_float),0,320,MainScreenHeight};
+    lastScreenShotView.frame = (CGRect){-(MainScreenWidth*offset_float),0,MainScreenWidth,MainScreenHeight};
     
     [self.backGroundView addSubview:lastScreenShotView];
     
@@ -150,7 +150,7 @@ static CGFloat min_distance = 100;// 最小回弹距离
     frame.origin.x = x;
     self.view.frame = frame;
     // TODO
-    lastScreenShotView.frame = (CGRect){-(MainScreenWidth*offset_float)+x*offset_float,0,320,MainScreenHeight};
+    lastScreenShotView.frame = (CGRect){-(MainScreenWidth*offset_float)+x*offset_float,0,MainScreenWidth,MainScreenHeight};
 }
 
 - (void)gestureAnimation:(BOOL)animated {
@@ -161,15 +161,7 @@ static CGFloat min_distance = 100;// 最小回弹距离
 #pragma mark - Gesture Recognizer -
 - (void)paningGestureReceive:(UIPanGestureRecognizer *)recoginzer
 {
-    
-//    UIView *view = recoginzer.view;
-//
-//    NSLog(@"%@",view);
-    
-//    [[NSNotificationCenter defaultCenter] postNotificationName:MAIN_VIEW_TAP object:nil];
     // If the viewControllers has only one vc or disable the interaction, then return.
-    
-    
     if (self.viewControllers.count <= 1) return;
     
     // we get the touch position by the window's coordinate
@@ -200,7 +192,7 @@ static CGFloat min_distance = 100;// 最小回弹距离
         
         lastScreenShotView = [[UIImageView alloc] initWithImage:lastScreenShot];
         
-        lastScreenShotView.frame = (CGRect){-(MainScreenWidth*offset_float),0,320,MainScreenHeight};
+        lastScreenShotView.frame = (CGRect){-(MainScreenWidth*offset_float),0,MainScreenWidth,MainScreenHeight};
         
         [self.backGroundView addSubview:lastScreenShotView];
         
@@ -239,10 +231,12 @@ static CGFloat min_distance = 100;// 最小回弹距离
         return;
         // cancal panning, alway move to left side automatically
     }else if (recoginzer.state == UIGestureRecognizerStateCancelled){
+        
         [UIView animateWithDuration:0.3 animations:^{
             [self moveViewWithX:0];
         } completion:^(BOOL finished) {
             _isMoving = NO;
+            
             self.backGroundView.hidden = YES;
         }];
         
@@ -252,6 +246,12 @@ static CGFloat min_distance = 100;// 最小回弹距离
     if (_isMoving) {
         [self moveViewWithX:touchPoint.x - startPoint.x];
     }
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end
