@@ -439,7 +439,7 @@
             
             for (HTMLNode *nameNode in ddNodesArray)
             {
-                NSLog(@"%@",nameNode.rawContents);
+//                NSLog(@"%@",nameNode.rawContents);
                 if ([[nameNode className] isEqualToString:@"username"])
                 {
                     reply.name = [nameNode.allContents stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -469,7 +469,7 @@
                     HTMLNode *smallTittle = [nameNode findChildOfClass:@"smallTittle"];
                     reply.totalTechnicalpoints = [smallTittle.allContents stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     
-                    NSLog(@"%@",topic_show_user_level.rawContents);
+//                    NSLog(@"%@",topic_show_user_level.rawContents);
                     
                 }
                     
@@ -498,7 +498,7 @@
                 {
                     //-------结贴率
                     reply.closeRate = nameNode.allContents;
-                    NSLog(@"%@",reply.closeRate);
+//                    NSLog(@"%@",reply.closeRate);
                 }
 
             }
