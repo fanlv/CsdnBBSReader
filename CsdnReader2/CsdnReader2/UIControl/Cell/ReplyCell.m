@@ -65,8 +65,8 @@
     coverView =    [[UIView alloc] init];
     
     replyNmaeLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 0, SCREEN_WIDTH - 120, 21)];
-    userInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 21, SCREEN_WIDTH - 120, 21)];
-    rowLabel =  [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 80, 10, 60, 21)];
+    userInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 21, SCREEN_WIDTH - 20, 21)];
+    rowLabel =  [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 80, 5, 60, 21)];
     logo = [[FLAsyncImageView alloc] initWithFrame:CGRectMake(10, 5, 30, 30)];
     logo.isCircleShape = YES;
     logo.isCacheImage = YES;
@@ -111,7 +111,7 @@
     dateLabel.frame = CGRectMake(5, reply.contentHeight + 40 , SCREEN_WIDTH - 10, 21);
     coverView .frame = CGRectMake(SCREEN_WIDTH*3./4, 0 , SCREEN_WIDTH/4 , reply.contentHeight+60);
     
-    userInfoLabel.text = [NSString stringWithFormat:@"等级：%@ (排名:%@)",reply.grade,reply.rank];
+    userInfoLabel.text = [NSString stringWithFormat:@"等级：%@  %@ %@",reply.grade,reply.totalTechnicalpoints,reply.closeRate];
     NSMutableString *showName = [[NSMutableString alloc] initWithString:reply.name];
 
     if (reply.indexR == 0)

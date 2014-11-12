@@ -439,6 +439,7 @@
             
             for (HTMLNode *nameNode in ddNodesArray)
             {
+                NSLog(@"%@",nameNode.rawContents);
                 if ([[nameNode className] isEqualToString:@"username"])
                 {
                     reply.name = [nameNode.allContents stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -459,32 +460,45 @@
                     //-------NickName
                     // NSLog(@"NickName:%@",reply.nickName);
                 }
-                else if ([[nameNode getAttributeNamed:@"title"] hasPrefix:@"总技术分"])
+                else if([nameNode findChildrenOfClass:@"topic_show_user_level"].count >0)
                 {
-                    //-------总技术分 总技术排名 等级
-
-                    NSString *gradeAndRankTotalPointsTitleClass = [nameNode getAttributeNamed:@"title"];
-                    NSArray *aArray = [gradeAndRankTotalPointsTitleClass componentsSeparatedByString:@"；"];
-                    reply.totalTechnicalpoints = [[aArray objectAtIndex:0] stringByReplacingOccurrencesOfString:@"总技术分：" withString:@""];
-                    //NSLog(@"总技术分:%@",reply.totalTechnicalpoints);
+                    HTMLNode *topic_show_user_level = [nameNode findChildOfClass:@"topic_show_user_level"];
+                    NSString *topic_show_user_level_alt = [topic_show_user_level getAttributeNamed:@"alt"];
+                    reply.grade = topic_show_user_level_alt;
                     
-                    reply.rank = [[aArray objectAtIndex:1] stringByReplacingOccurrencesOfString:@"总技术排名：" withString:@""];
-                    //NSLog(@"总技术排名:%@",reply.rank);
+                    HTMLNode *smallTittle = [nameNode findChildOfClass:@"smallTittle"];
+                    reply.totalTechnicalpoints = [smallTittle.allContents stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     
-                    HTMLNode *gradeNode = [nameNode findChildTag:@"img"];
-                    NSString *grade = [gradeNode getAttributeNamed:@"class"];
-                    grade = [grade stringByReplacingOccurrencesOfString:@"grade " withString:@""];
-                    grade = [grade stringByReplacingOccurrencesOfString:@"user" withString:@"裤衩"];
-                    grade = [grade stringByReplacingOccurrencesOfString:@"star" withString:@"星星"];
-                    grade = [grade stringByReplacingOccurrencesOfString:@"diam" withString:@"钻石"];
-                    reply.grade = grade;
-                    //NSLog(@"%@",reply.grade);
+                    NSLog(@"%@",topic_show_user_level.rawContents);
+                    
                 }
+                    
+//                else if ([[nameNode getAttributeNamed:@"title"] hasPrefix:@"总技术分"])
+//                {
+//                    //-------总技术分 总技术排名 等级
+//
+//                    NSString *gradeAndRankTotalPointsTitleClass = [nameNode getAttributeNamed:@"title"];
+//                    NSArray *aArray = [gradeAndRankTotalPointsTitleClass componentsSeparatedByString:@"；"];
+//                    reply.totalTechnicalpoints = [[aArray objectAtIndex:0] stringByReplacingOccurrencesOfString:@"总技术分：" withString:@""];
+//                    //NSLog(@"总技术分:%@",reply.totalTechnicalpoints);
+//                    
+//                    reply.rank = [[aArray objectAtIndex:1] stringByReplacingOccurrencesOfString:@"总技术排名：" withString:@""];
+//                    //NSLog(@"总技术排名:%@",reply.rank);
+//                    
+//                    HTMLNode *gradeNode = [nameNode findChildTag:@"img"];
+//                    NSString *grade = [gradeNode getAttributeNamed:@"class"];
+//                    grade = [grade stringByReplacingOccurrencesOfString:@"grade " withString:@""];
+//                    grade = [grade stringByReplacingOccurrencesOfString:@"user" withString:@"裤衩"];
+//                    grade = [grade stringByReplacingOccurrencesOfString:@"star" withString:@"星星"];
+//                    grade = [grade stringByReplacingOccurrencesOfString:@"diam" withString:@"钻石"];
+//                    reply.grade = grade;
+//                    //NSLog(@"%@",reply.grade);
+//                }
                 else if ([[nameNode allContents] hasPrefix:@"结帖率"])
                 {
                     //-------结贴率
                     reply.closeRate = nameNode.allContents;
-                    //NSLog(@"%@",reply.closeRate);
+                    NSLog(@"%@",reply.closeRate);
                 }
 
             }

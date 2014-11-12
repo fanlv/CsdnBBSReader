@@ -36,7 +36,7 @@
 -(id)initWith:(id<MyHandleDelegate>)del url:(NSString*)strUrl what:(int)what;
 ///get方式调用2
 -(id)initWith:(id<MyHandleDelegate>)del url:(NSString*)strUrl action:(SEL)selector;
-///get方式调用3
+///get方式调用3使用cookies
 -(id)initWith:(id<MyHandleDelegate>)del url:(NSString*)strUrl action:(SEL)selector cookies:(NSArray *)cookie;
 
 
