@@ -303,10 +303,19 @@
 {
     if (indexPath.row == 0)
     {
-        ReplyViewController *vc = [[ReplyViewController alloc] init];
-        NSString *topicId = [self.article.link stringByReplacingOccurrencesOfString:@"/topics/" withString:@""];
-        [vc setTopicId:topicId];
-        [self.navigationController pushViewController:vc animated:YES];
+        if(self.userInfo.isLogin)
+        {
+            ReplyViewController *vc = [[ReplyViewController alloc] init];
+            NSString *topicId = [self.article.link stringByReplacingOccurrencesOfString:@"/topics/" withString:@""];
+            [vc setTopicId:topicId];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else
+        {
+            [SVProgressHUD showErrorWithStatus:@"请先登录账号，谢谢。"];
+        }
+        
+
     }
     else if (indexPath.row == 1)
     {

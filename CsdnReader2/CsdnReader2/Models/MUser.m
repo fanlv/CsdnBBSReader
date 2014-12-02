@@ -113,10 +113,10 @@ static MUser *mUser = nil;
         NSHTTPCookie *cookie = nil ;
         for (cookie in responseCookies)
         {
-//            if (![cookie.value isEqualToString:@""])
-//            {
-//                NSLog(@"vaule: %@, name : %@",cookie.value ,cookie.name);
-//            }
+            if (![cookie.value isEqualToString:@""])
+            {
+                NSLog(@"vaule: %@, name : %@",cookie.value ,cookie.name);
+            }
             if ([cookie.name isEqualToString:COOKIE_USERNICK])
             {
                 user.userNick = cookie.value;

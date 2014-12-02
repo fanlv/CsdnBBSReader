@@ -115,7 +115,6 @@
 		69F7CE4519ECD39C003D4CA2 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F7CE4419ECD39B003D4CA2 /* libxml2.2.dylib */; };
 		69F7CE4B19ECEDE8003D4CA2 /* ArticleTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 69F7CE4A19ECEDE8003D4CA2 /* ArticleTitleCell.m */; };
 		69F7CE5019ECFB81003D4CA2 /* ArticleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69F7CE4F19ECFB81003D4CA2 /* ArticleDetailViewController.m */; };
-		E592CA1519F13E1400969A1A /* logo2.png in Resources */ = {isa = PBXBuildFile; fileRef = E592CA1419F13E1400969A1A /* logo2.png */; };
 		E5EAF09D19F023CF001E867F /* LaunchScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = E5EAF09C19F023CF001E867F /* LaunchScreen.png */; };
 		E5EAF0A019F03067001E867F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5EAF09F19F03067001E867F /* LoginViewController.m */; };
 /* End PBXBuildFile section */
@@ -969,7 +968,7 @@
 		69F7CCDA19ECAC42003D4CA2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Fanlv;
 				TargetAttributes = {
 					69F7CCE119ECAC42003D4CA2 = {
@@ -1025,7 +1024,6 @@
 				69F7CDE919ECAE68003D4CA2 /* IQButtonBarArrowRight@2x.png in Resources */,
 				69A6E76A19F0F8BF000C2A9F /* StartPage.xib in Resources */,
 				69F7CE0A19ECAE68003D4CA2 /* nav_bg.png in Resources */,
-				E592CA1519F13E1400969A1A /* logo2.png in Resources */,
 				69A6E7A219F10687000C2A9F /* logo120.png in Resources */,
 				E5EAF09D19F023CF001E867F /* LaunchScreen.png in Resources */,
 			);
