@@ -12,5 +12,7 @@
 
 
 @property (nonatomic,strong) NSString *topicId;
+@property (nonatomic,strong) UIImage *captchaImg;
+@property (nonatomic,strong) NSString *captchaUrl;
 
 @end

@@ -22,7 +22,8 @@
     NSArray *authorReplyLists;
     BOOL isOnlySeeAuthor;
     NSString *errorCode;
-    
+    UIImage *captchaImg;
+    NSString *captchaUrl;
 
 }
 
@@ -308,6 +309,11 @@
             ReplyViewController *vc = [[ReplyViewController alloc] init];
             NSString *topicId = [self.article.link stringByReplacingOccurrencesOfString:@"/topics/" withString:@""];
             [vc setTopicId:topicId];
+            vc.captchaImg = captchaImg;
+            vc.captchaUrl = captchaUrl;
+            
+//            NSLog(@"%@",captchaUrl);
+
             [self.navigationController pushViewController:vc animated:YES];
         }
         else
@@ -413,6 +419,23 @@
     HTMLNode *wraper = [bodyNode findChildOfClass:@"wraper"];
     HTMLNode *detailed = [wraper findChildOfClass:@"detailed"];
     NSArray *replyNodes = [detailed findChildTags:@"table"];
+    
+    
+    HTMLNode *captcha = [[bodyNode findChildrenWithAttribute:@"alt" matchingName:@"captcha" allowPartial:YES] firstObject];
+
+    if (captcha)
+    {
+        captchaUrl = [captcha getAttributeNamed:@"src"];
+        NSString *url = [NSString stringWithFormat:@"http://bbs.csdn.net%@",captchaUrl];
+        NSData *data  = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+        captchaImg = [UIImage imageWithData:data];
+        NSLog(@"%@",captchaUrl);
+    }
+    else
+    {
+        captchaImg = nil;
+        captchaUrl = @"";
+    }
     
     for (HTMLNode *tableNode in replyNodes)
     {

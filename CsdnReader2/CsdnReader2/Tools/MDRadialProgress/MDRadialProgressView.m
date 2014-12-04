@@ -222,7 +222,7 @@
     float innerRadius = innerDiameter / 2;
     
     if (! self.theme.sliceDividerHidden) {
-        int sliceCount = self.progressTotal;
+        NSInteger sliceCount = self.progressTotal;
         float sliceAngle = (2 * M_PI) / sliceCount;
         CGContextSetLineWidth(contextRef, self.theme.sliceDividerThickness);
         CGContextSetStrokeColorWithColor(contextRef, self.theme.sliceDividerColor.CGColor);

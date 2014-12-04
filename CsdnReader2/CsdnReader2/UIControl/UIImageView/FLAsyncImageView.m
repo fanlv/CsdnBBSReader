@@ -164,12 +164,16 @@ static NSMutableArray *downingImageUrls;
                                                  name:notificattionName object:nil];
 }
 
+- (void)initView
+{
+    _localPath = nil;
+    imageUrl = nil;
+}
 
 
 - (void)setImageUrl:(NSString *)url
 {
-    _localPath = nil;
-    imageUrl = nil;
+    [self initView];
     dispatch_async(dispatch_get_main_queue(), ^{
         if (url== nil || [url isKindOfClass:[NSNull class]] ||[url length] == 0)
         {
@@ -638,6 +642,7 @@ static NSMutableArray *downingImageUrls;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificattionName object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DOWNLOAD_IMAGE_SUCCESSED object:nil];
 }
