@@ -67,6 +67,13 @@
     // Use when fetching text data
     NSString *responseString = [request responseString];
     NSError *error = nil;
+    
+    if([responseString isEqualToString:@"验证码输入错误"])
+    {
+        [SVProgressHUD dismissWithError:@"验证码输入错误"];
+        return;
+    }
+    
     HTMLParser *parser = [[HTMLParser alloc] initWithString:responseString error:&error];
     if (error)
     {
