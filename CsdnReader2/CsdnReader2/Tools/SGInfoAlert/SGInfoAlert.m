@@ -92,8 +92,20 @@ static void addRoundedRectToPath(CGContextRef context, CGRect rect,
           inView:(UIView *)view 
         vertical:(float)height{
     height = height < 0 ? 0 : height > 1 ? 1 : height;
-    CGSize size = [info sizeWithFont:[UIFont systemFontOfSize:kSGInfoAlert_fontSize]
-                   constrainedToSize:kMax_ConstrainedSize];
+//    CGSize size = [info sizeWithFont:[UIFont systemFontOfSize:kSGInfoAlert_fontSize]
+//                   constrainedToSize:kMax_ConstrainedSize];
+    
+    NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          [UIFont systemFontOfSize:kSGInfoAlert_fontSize], NSFontAttributeName,nil];
+    NSMutableAttributedString *tmpString = [[NSMutableAttributedString alloc] initWithString:info attributes:attributesDictionary];
+    CGSize size = [tmpString boundingRectWithSize:CGSizeMake(MAXFLOAT, 1000.0)
+                                          options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                          context:nil].size;
+    
+    
+    
+    
+    
     CGRect frame = CGRectMake(0, 0, size.width, size.height+6);
     SGInfoAlert *alert = [[SGInfoAlert alloc] initWithFrame:frame bgColor:color info:info];
     alert.center = CGPointMake(view.center.x, view.frame.size.height*height);

@@ -251,7 +251,7 @@ static GlobalData *globalData=nil;
     
     
     NSString *showDateString = [[NSString alloc] init];
-    NSInteger distance = fabs([timeData timeIntervalSinceNow]);
+    int distance = fabs([timeData timeIntervalSinceNow]);
     if (distance < 60)
     {
         int i = distance;
@@ -343,14 +343,14 @@ static GlobalData *globalData=nil;
     //获取相应的时间操作
     [comps year];     //对应 - NSMonthCalendarUnit
     NSMutableString *dateString = [[NSMutableString alloc] initWithString:date ];
-    [dateString insertString:[NSString stringWithFormat:@"%d-", [comps year]] atIndex:0];
+    [dateString insertString:[NSString stringWithFormat:@"%ld-", (long)[comps year]] atIndex:0];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
     NSDate *sendDate = [dateFormatter dateFromString:dateString];
     
     
     NSString *showDateString = [[NSString alloc] init];
-    NSInteger distance = fabs([sendDate timeIntervalSinceNow]);
+    int distance = fabs([sendDate timeIntervalSinceNow]);
     if (distance < 60)
     {
         showDateString = [NSString stringWithFormat:@"%d秒前",distance];

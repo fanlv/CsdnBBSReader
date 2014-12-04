@@ -185,7 +185,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void)setTextWithIntegerValue:(NSInteger)value
 {
     self.hidden = (value == 0);
-    [self setText:[NSString stringWithFormat:@"%i", value]];
+    [self setText:[NSString stringWithFormat:@"%li", (long)value]];
 }
 
 - (void)setText:(NSString *)string
@@ -259,7 +259,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         size.width = ceilf(size.width);
         size.height = ceilf(size.height);
     } else {
-        size = [self.textLabel.text sizeWithFont:self.textLabel.font];
+//        size = [self.textLabel.text sizeWithFont:self.textLabel.font];
+        
+        NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                              self.textLabel.font, NSFontAttributeName,nil];
+        NSMutableAttributedString *tmpString = [[NSMutableAttributedString alloc] initWithString:self.textLabel.text attributes:attributesDictionary];
+        size = [tmpString boundingRectWithSize:CGSizeMake(MAXFLOAT, 1000.0)
+                                              options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                              context:nil].size;
+        
+        
     }
     
     size.width += self.textSizePadding.width;

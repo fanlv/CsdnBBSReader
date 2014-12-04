@@ -16,7 +16,7 @@
 {
     FLTableView *_tableView;
     NSArray *articleLists;
-    NSInteger page;
+    int page;
 }
 
 @end

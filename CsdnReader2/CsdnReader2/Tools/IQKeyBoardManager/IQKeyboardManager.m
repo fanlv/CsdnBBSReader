@@ -1054,7 +1054,7 @@
     
     if (self)
     {
-        [self setSegmentedControlStyle:UISegmentedControlStyleBar];
+//        [self setSegmentedControlStyle:UISegmentedControlStyleBar];
 		[self setMomentary:YES];
 		[self setTintColor:[UIColor blackColor]];
 		//  Adding self as it's valueChange selector.

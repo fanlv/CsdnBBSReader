@@ -232,7 +232,7 @@ static NSLock *readLock = nil;
     switch (eventCode) {
         case NSStreamEventOpenCompleted:
             if (requestedEvents & kCFStreamEventOpenCompleted) {
-                copiedCallback((CFReadStreamRef)self,
+                copiedCallback((CFReadStreamRef)(id)self,
                                kCFStreamEventOpenCompleted,
                                copiedContext.info);
             }
@@ -240,7 +240,7 @@ static NSLock *readLock = nil;
             
         case NSStreamEventHasBytesAvailable:
             if (requestedEvents & kCFStreamEventHasBytesAvailable) {
-                copiedCallback((CFReadStreamRef)self,
+                copiedCallback((CFReadStreamRef)(id)self,
                                kCFStreamEventHasBytesAvailable,
                                copiedContext.info);
             }
@@ -248,7 +248,7 @@ static NSLock *readLock = nil;
             
         case NSStreamEventErrorOccurred:
             if (requestedEvents & kCFStreamEventErrorOccurred) {
-                copiedCallback((CFReadStreamRef)self,
+                copiedCallback((CFReadStreamRef)(id)self,
                                kCFStreamEventErrorOccurred,
                                copiedContext.info);
             }
@@ -256,7 +256,7 @@ static NSLock *readLock = nil;
             
         case NSStreamEventEndEncountered:
             if (requestedEvents & kCFStreamEventEndEncountered) {
-                copiedCallback((CFReadStreamRef)self,
+                copiedCallback((CFReadStreamRef)(id)self,
                                kCFStreamEventEndEncountered,
                                copiedContext.info);
             }

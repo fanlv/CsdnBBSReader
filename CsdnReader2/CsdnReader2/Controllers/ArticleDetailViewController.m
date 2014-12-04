@@ -17,7 +17,7 @@
 @interface ArticleDetailViewController ()<UITableViewDataSource,UITableViewDelegate,MyHandleDelegate,FLTableViewDelegate,UIPopoverListViewDataSource, UIPopoverListViewDelegate>
 {
     FLTableView *_tableView;
-    NSInteger page;
+    int page;
     NSArray *replyLists;
     NSArray *authorReplyLists;
     BOOL isOnlySeeAuthor;
@@ -398,7 +398,7 @@
     {
         replyLisMutableArray = [[NSMutableArray alloc] initWithArray:replyLists];
         rowCount = replyLisMutableArray.count;
-        indexTmp = rowCount;
+        indexTmp = (int)rowCount;
         
         authorReplyLisMutableArray = [[NSMutableArray alloc] initWithArray:authorReplyLists];
         authorRowCount = authorReplyLisMutableArray.count;
