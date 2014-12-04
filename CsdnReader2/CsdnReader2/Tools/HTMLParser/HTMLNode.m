@@ -32,13 +32,22 @@ void setAttributeNamed(xmlNode * node, const char * nameStr, const char * value)
 	for(xmlAttrPtr attr = node->properties; NULL != attr; attr = attr->next)
 	{
 		if (strcmp((char*)attr->name, nameStr) == 0)
-		{				
-			for(xmlNode * child = attr->children; NULL != child; child = child->next)
-			{
-				free(child->content);
-				child->content = (xmlChar*)newVal;
-				break;
-			}
+		{
+            
+            xmlNode * child = attr->children;
+            while (child != NULL)
+            {
+                free(child->content);
+                child->content = (xmlChar*)newVal;
+                break;
+            }
+            
+//			for(xmlNode * child = attr->children; NULL != child; child = child->next)
+//			{
+//				free(child->content);
+//				child->content = (xmlChar*)newVal;
+//				break;
+//			}
 			break;
 		}
 	}
@@ -51,12 +60,18 @@ NSString * getAttributeNamed(xmlNode * node, const char * nameStr)
 	for(xmlAttrPtr attr = node->properties; NULL != attr; attr = attr->next)
 	{
 		if (strcmp((char*)attr->name, nameStr) == 0)
-		{				
-			for(xmlNode * child = attr->children; NULL != child; child = child->next)
-			{
-				return [NSString stringWithCString:(void*)child->content encoding:NSUTF8StringEncoding];
-				
-			}
+		{
+            
+            xmlNode * child = attr->children;
+            while (child != NULL)
+            {
+                return [NSString stringWithCString:(void*)child->content encoding:NSUTF8StringEncoding];
+            }
+            
+//			for(xmlNode * child = attr->children; NULL != child; child = child->next)
+//			{
+//				return [NSString stringWithCString:(void*)child->content encoding:NSUTF8StringEncoding];
+//			}
 			break;
 		}
 	}
