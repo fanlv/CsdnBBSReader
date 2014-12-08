@@ -583,7 +583,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [_tableView reloadData];
         
-        _tableView.footerEnable = (replyLisMutableArray.count ==100);
+        _tableView.footerEnable = (replyLisMutableArray.count /50.0==0);
 
         if (isOnlySeeAuthor)
         {
