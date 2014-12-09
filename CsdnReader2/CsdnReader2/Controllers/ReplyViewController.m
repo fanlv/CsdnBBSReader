@@ -108,11 +108,11 @@
     requestForm.delegate = self;
     
     
-//    if ([self.userInfo.cookies count]>0)
-//    {
-//        [requestForm setUseCookiePersistence:NO];
-//        [requestForm setRequestCookies:[self.userInfo.cookies mutableCopy]];
-//    }
+    if ([self.userInfo.cookies count]>0)
+    {
+        [requestForm setUseCookiePersistence:NO];
+        [requestForm setRequestCookies:[self.userInfo.cookies mutableCopy]];
+    }
     
     if ([self.captchaUrl length]>0)
     {
