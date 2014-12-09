@@ -105,6 +105,10 @@
             titleLabel.textColor = [UIColor blueColor];
         }
     }
+    else
+    {
+        titleLabel.textColor = [UIColor blackColor];
+    }
     //------显示问题分数
     self.pointLabel.text = [NSString stringWithFormat:@"%@分",article.point];
     //------显示有多少回复

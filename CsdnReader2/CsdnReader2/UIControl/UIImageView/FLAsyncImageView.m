@@ -17,12 +17,12 @@
 @interface FLAsyncImageView()
 {
     NSString *notificattionName;
-    NSMutableData *data;
+//    NSMutableData *data;
     long long mFileSize;
     int tryDownloadCount;
 }
 ///图片本地默认保存的路径，不设置的话会保存在cache文件夹
-@property (nonatomic, strong) NSString *localPath;
+@property (nonatomic, readonly) NSString *localPath;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
 @end
@@ -31,6 +31,7 @@
 
 static NSMutableDictionary *imageCacheDic;
 static NSMutableArray *downingImageUrls;
+static NSMutableDictionary *imageDataDic;
 
 
 @synthesize imageUrl,isCacheImage,isSaveToCacheFolder;
@@ -50,15 +51,15 @@ static NSMutableArray *downingImageUrls;
 
 - (NSString *)localPath
 {
-    if (_localPath == nil)
-    {
-        NSString *imageCachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        NSString *fileName = [imageUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"_"];
-        fileName = [fileName stringByReplacingOccurrencesOfString:@":" withString:@"_"];
-        fileName = [fileName stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
-        _localPath = [imageCachePath stringByAppendingPathComponent:fileName];
-    }
-    return _localPath;
+//    if (_localPath == nil)
+//    {
+//        NSString *imageCachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+//        NSString *fileName = [imageUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"_"];
+//        fileName = [fileName stringByReplacingOccurrencesOfString:@":" withString:@"_"];
+//        fileName = [fileName stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+//        _localPath = [imageCachePath stringByAppendingPathComponent:fileName];
+//    }
+    return [self urlToLocalPath:imageUrl];
 }
 
 - (id)init
@@ -114,6 +115,7 @@ static NSMutableArray *downingImageUrls;
     else
     {
         [self.spinner removeFromSuperview];
+        self.spinner = nil;
     }
 }
 
@@ -130,6 +132,10 @@ static NSMutableArray *downingImageUrls;
     if (downingImageUrls == nil)
     {
         downingImageUrls = [[NSMutableArray alloc] init];
+    }
+    if (imageDataDic == nil)
+    {
+        imageDataDic = [[NSMutableDictionary alloc] init];
     }
     tryDownloadCount = 0;
     
@@ -164,17 +170,16 @@ static NSMutableArray *downingImageUrls;
                                                  name:notificattionName object:nil];
 }
 
-- (void)initView
-{
-    _localPath = nil;
-    imageUrl = nil;
-}
+
 
 
 - (void)setImageUrl:(NSString *)url
 {
-    [self initView];
     dispatch_async(dispatch_get_main_queue(), ^{
+        
+        imageUrl = nil;
+        [self.spinner stopAnimating];
+        
         if (url== nil || [url isKindOfClass:[NSNull class]] ||[url length] == 0)
         {
             imageUrl = nil;
@@ -193,123 +198,14 @@ static NSMutableArray *downingImageUrls;
 }
 
 
-
-- (void)downloadImage
+- (NSString *)urlToLocalPath:(NSString *)url
 {
-    @try
-    {
-        @synchronized(imageCacheDic)
-        {
-            id imageCache = [imageCacheDic objectForKey:imageUrl];
-            if (imageCache)//如果有缓存的话直接缓存读取。
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.image = imageCache;
-                    
-                    if (self.delegate && [self.delegate respondsToSelector:@selector(downloadProgress:)])
-                    {
-                        [self.delegate downloadProgress:100];
-                    }
-                });
-                
-            }
-            else
-            {
-                self.image = _defaultImage;
-                [self.spinner startAnimating];
-                if ([FileManage isExist:self.localPath])
-                {
-                    [self downLaodSucceed:nil downUrl:nil];
-                }
-                else
-                {
-                    [self downLoadWithUrl:imageUrl];
-                }
-            }
-            
-        }
-    }
-    @catch (NSException *exception) {
-        NSLog(@"imageCacheDic exception : %@",exception);
-    }
-    
-    
-    
-    
-    
-    
-}
-
-- (void)downLaodSucceed:(NSData *)imageData downUrl:(NSString *)url
-{
-    dispatch_queue_t queue=dispatch_queue_create("downLaodSucceed", NULL);
-
-    dispatch_async(queue, ^{
-        UIImage *image;
-        //有时候会有几个线程同时下载同一张图片保存的时候需要判断下
-        if (imageData)
-        {
-            image = [UIImage imageWithData:imageData];
-            if (isSaveToCacheFolder)
-            {
-                [imageData writeToFile:self.localPath atomically:YES];
-            }
-        }
-        else
-        {
-            image = [UIImage imageWithContentsOfFile:self.localPath];
-        }
-        
-        //---------如果需要缓存则缓存改图片下次会直接获取。
-        if (isCacheImage)
-        {
-            @try {
-                @synchronized(imageCacheDic)
-                {
-                    if (image && url)
-                    {
-                        [imageCacheDic setObject:image forKey:url];
-                    }
-                }
-            }
-            @catch (NSException *exception) {
-                NSLog(@"imageCacheDic exception : %@",exception);
-            }
-            
-            
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.delegate && [self.delegate respondsToSelector:@selector(downloadProgress:)])
-            {
-                [self.delegate downloadProgress:100];
-            }
-            [self.spinner removeFromSuperview];
-            self.spinner = nil;
-
-            if (notificattionName)
-            {
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificattionName object:image];
-            }
-            else
-            {
-                if (image)
-                {
-                    self.image = image;
-                }
-                else
-                {
-                    UIImage *img = [UIImage imageWithData:imageData];
-                    NSLog(@"IMAGE IS niL,%@  , %@",url,img);
-                }
-                if ([imageUrl length] >0 && image)
-                {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:DOWNLOAD_IMAGE_SUCCESSED object:@[imageUrl,image]];
-                }
-
-            }
-        });
-    });
-    
+    NSString *imageCachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *fileName = [url stringByReplacingOccurrencesOfString:@"\\" withString:@"_"];
+    fileName = [fileName stringByReplacingOccurrencesOfString:@":" withString:@"_"];
+    fileName = [fileName stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    fileName = [imageCachePath stringByAppendingPathComponent:fileName];
+    return fileName;
 }
 
 
@@ -357,14 +253,10 @@ static NSMutableArray *downingImageUrls;
     NSString *url = [array objectAtIndex:0];
     UIImage *img = [array objectAtIndex:1];
     
-    
- 
-    
     if ([url isEqualToString:imageUrl] && self.image != img)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.spinner removeFromSuperview];
-            self.spinner = nil;
+            [self.spinner stopAnimating];
             self.image =img;
         });
     }
@@ -375,30 +267,26 @@ static NSMutableArray *downingImageUrls;
 {
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinner removeFromSuperview];
-        self.spinner = nil;
-
+        [self.spinner stopAnimating];
+        
         if (self.image != note.object)
         {
             self.image = note.object;
         }
         
         //---------如果需要缓存则缓存改图片下次会直接获取。
-        if (isCacheImage && self.image != _defaultImage)
+        if (isCacheImage && self.image != _defaultImage && self.image && imageUrl)
         {
             @try {
                 @synchronized(imageCacheDic)
                 {
-                    if (self.image && imageUrl)
-                    {
-                        [imageCacheDic setObject:self.image forKey:imageUrl];
-                        if (isSaveToCacheFolder)
-                        {
-                            NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(self.image,1)];
-                            [imageData writeToFile:self.localPath atomically:YES];
-                        }
-                    }
-               
+                    [imageCacheDic setObject:self.image forKey:imageUrl];
+//                    if (isSaveToCacheFolder)
+//                    {
+//                        NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(self.image,1)];
+//                        [imageData writeToFile:self.localPath atomically:YES];
+//                    }
+                    
                 }
             }
             @catch (NSException *exception) {
@@ -430,8 +318,8 @@ static NSMutableArray *downingImageUrls;
         [FileManage removeItem:self.localPath];
     }
     self.image = _defaultImage;
-    [self.spinner removeFromSuperview];
-    self.spinner = nil;
+    [self.spinner stopAnimating];
+
 
     @try {
         @synchronized(imageCacheDic)
@@ -445,8 +333,6 @@ static NSMutableArray *downingImageUrls;
     @catch (NSException *exception) {
         NSLog(@"imageCacheDic : %@",exception);
     }
-    
-    
 }
 
 - (void)clearCacheOnly
@@ -465,6 +351,49 @@ static NSMutableArray *downingImageUrls;
     }
 }
 
+#pragma mark - downloadImage
+
+
+- (void)downloadImage
+{
+    @try
+    {
+        @synchronized(imageCacheDic)
+        {
+            id imageCache = [imageCacheDic objectForKey:imageUrl];
+            if (imageCache)//如果有缓存的话直接缓存读取。
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.image = imageCache;
+                    if (self.delegate && [self.delegate respondsToSelector:@selector(downloadProgress:)])
+                    {
+                        [self.delegate downloadProgress:100];
+                    }
+                });
+            }
+            else
+            {
+                self.image = _defaultImage;
+                [self.spinner startAnimating];
+                if ([FileManage isExist:self.localPath])
+                {
+                    UIImage *image = [UIImage imageWithContentsOfFile:self.localPath];
+                    [self downLaodSucceed:image downUrl:imageUrl];
+                }
+                else
+                {
+                    [self downLoadWithUrl:imageUrl];
+                }
+            }
+            
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"imageCacheDic exception : %@",exception);
+    }
+    
+}
+
 
 -(void)downLoadWithUrl:(NSString *)url
 {
@@ -474,7 +403,6 @@ static NSMutableArray *downingImageUrls;
     }
     if (![downingImageUrls containsObject:url])
     {
-        
         NSURL *netUrl = [[NSURL alloc] initWithString:url];
         NSURLRequest* request = [NSURLRequest requestWithURL:netUrl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.0];
         NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -494,19 +422,69 @@ static NSMutableArray *downingImageUrls;
     }
     else
     {
-//        if (tryDownloadCount >=3)
-//        {
-//            NSLog(@"tryDownloadCount >=3 ");
-//            return;
-//        }
-//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//            sleep(5);
-//            self.imageUrl = url;
-//        });
-//        tryDownloadCount++;
-//        NSLog(@"已经开始下载，%@",url);
+        //        if (tryDownloadCount >=3)
+        //        {
+        //            NSLog(@"tryDownloadCount >=3 ");
+        //            return;
+        //        }
+        //        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        //            sleep(5);
+        //            self.imageUrl = url;
+        //        });
+        //        tryDownloadCount++;
+        //        NSLog(@"已经开始下载，%@",url);
     }
+    
+}
 
+- (void)downLaodSucceed:(UIImage *)image downUrl:(NSString *)url
+{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(downloadProgress:)])
+        {
+            [self.delegate downloadProgress:100];
+        }
+        [self.spinner stopAnimating];
+        
+        
+        if (notificattionName)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:notificattionName object:image];
+        }
+        else
+        {
+            //下载完成以后显示的时候需要判断下当前设置的imageUrl是否与下载完成的url相等。
+            if (image && [imageUrl isEqualToString:url])
+            {
+                self.image = image;
+                NSLog(@"imageUrl %@:",imageUrl);
+
+            }
+            else
+            {
+                NSLog(@"1url %@:",url);
+                NSLog(@"2Url %@:",imageUrl);
+                id imageCache = [imageCacheDic objectForKey:imageUrl];
+                if (imageCache)//如果有缓存的话直接缓存读取。
+                {
+                    NSLog(@"imageCache not nil");
+                    self.image = imageCache;
+                }
+                else
+                {
+                    NSLog(@"nil");
+                    self.image = _defaultImage;
+                }
+            }
+            if ([imageUrl length] >0 && image)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:DOWNLOAD_IMAGE_SUCCESSED object:@[imageUrl,image]];
+            }
+            
+        }
+    });
+    
 }
 
 
@@ -515,8 +493,21 @@ static NSMutableArray *downingImageUrls;
 //连接成功,当链接收到回复时调用该方法
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    data = [[NSMutableData alloc] init];
+    NSMutableData *data = [[NSMutableData alloc] init];
+    
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+    NSURLRequest* request = [connection currentRequest];
+
+    @try {
+        @synchronized(imageDataDic)
+        {
+            [imageDataDic setObject:data forKey:[request.URL absoluteString]];
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"imageDataDic set %@",exception);
+    }
+    
     //对于http请求,成功的返回码为200
     if (httpResponse && [httpResponse respondsToSelector:@selector(allHeaderFields)] &&httpResponse.statusCode ==200)
     {
@@ -525,7 +516,6 @@ static NSMutableArray *downingImageUrls;
     }
     else
     {
-        NSURLRequest* request = [connection currentRequest];
         @try {
             @synchronized(downingImageUrls)
             {
@@ -537,13 +527,8 @@ static NSMutableArray *downingImageUrls;
         }
         NSLog(@"下载失败，%@",[request.URL absoluteString]);
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.spinner removeFromSuperview];
-            self.spinner = nil;
-
-            if (_defaultImage)
-            {
-                self.image  = _defaultImage;
-            }
+            [self.spinner stopAnimating];
+            if (_defaultImage)self.image  = _defaultImage;
         });
         
     }
@@ -551,6 +536,9 @@ static NSMutableArray *downingImageUrls;
 //接收数据
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)incrementalData
 {
+    NSURLRequest* request = [connection currentRequest];
+    NSMutableData *data = [imageDataDic objectForKey:[request.URL absoluteString]];
+    
     [data appendData:incrementalData];
     float progress =  [data length]*1.0/mFileSize;
     if (self.delegate && [self.delegate respondsToSelector:@selector(downloadProgress:)])
@@ -563,29 +551,67 @@ static NSMutableArray *downingImageUrls;
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSURLRequest* request = [connection currentRequest];
+    NSMutableData *data = [imageDataDic objectForKey:[request.URL absoluteString]];
+
+    dispatch_queue_t queue=dispatch_queue_create("downLaodSucceed", NULL);
+    dispatch_async(queue, ^{
+        UIImage *image = [UIImage imageWithData:data];;
+        if (data && isSaveToCacheFolder)
+        {
+            NSString *filePath = [self urlToLocalPath:[request.URL absoluteString]];
+            [data writeToFile:filePath atomically:YES];
+        }
+        //---------如果需要缓存则缓存改图片下次会直接获取。
+        if (isCacheImage)
+        {
+            @try {
+                @synchronized(imageCacheDic)
+                {
+                    if (image && [request.URL absoluteString])
+                    {
+                        [imageCacheDic setObject:image forKey:[request.URL absoluteString]];
+                    }
+                }
+            }
+            @catch (NSException *exception) {
+                NSLog(@"imageCacheDic exception : %@",exception);
+            }
+        }
+        
+        NSLog(@"downLaodSucceed:image downUrl : %@",[request.URL absoluteString]);
+
+        [self downLaodSucceed:image downUrl:[request.URL absoluteString]];
+
+    });
+    
+    
     
     @try {
         @synchronized(downingImageUrls)
         {
             [downingImageUrls removeObject:[request.URL absoluteString]];
         }
+        @synchronized(imageDataDic)
+        {
+            [imageDataDic removeObjectForKey:[request.URL absoluteString]];
+        }
     }
     @catch (NSException *exception) {
         NSLog(@"downingImageUrl : %@",exception);
     }
 
-    [self downLaodSucceed:data downUrl:[request.URL absoluteString]];
+    
+    
 }
 
 
-#pragma mark - NSURLConnectionDelegate methods
+#pragma mark  NSURLConnectionDelegate methods
 //连接失败
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [self.spinner removeFromSuperview];
-        self.spinner = nil;
+        [self.spinner stopAnimating];
+
 
         if (_defaultImage)
         {
@@ -642,10 +668,37 @@ static NSMutableArray *downingImageUrls;
 
 - (void)dealloc
 {
+    imageUrl = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificattionName object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DOWNLOAD_IMAGE_SUCCESSED object:nil];
 }
+
+
+
+
+#pragma mark - Help Class
+//判断文件/文件夹是否存在
+- (BOOL)isExist:(NSString*)path
+{
+    BOOL ret=NO;
+    BOOL isdir=NO;
+    ret = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isdir];
+    // NSLog(@"file or dir is exist=%d isdir=%d path=%@",ret,isdir,path);
+    return ret;
+}
+
+
+//删除文件/文件夹
+- (BOOL)removeItem:(NSString*)path
+{
+    BOOL ret=NO;
+    if(path!=nil){
+        ret = [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+    }
+    return ret;
+}
+
 
 
 @end
