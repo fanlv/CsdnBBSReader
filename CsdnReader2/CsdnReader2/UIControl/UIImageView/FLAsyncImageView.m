@@ -17,7 +17,7 @@
 @interface FLAsyncImageView()
 {
     NSString *notificattionName;
-//    NSMutableData *data;
+    //    NSMutableData *data;
     long long mFileSize;
     int tryDownloadCount;
 }
@@ -30,7 +30,7 @@
 @implementation FLAsyncImageView
 
 static NSMutableDictionary *imageCacheDic;
-static NSMutableArray *downingImageUrls;
+//static NSMutableArray *downingImageUrls;
 static NSMutableDictionary *imageDataDic;
 
 
@@ -51,42 +51,42 @@ static NSMutableDictionary *imageDataDic;
 
 - (NSString *)localPath
 {
-//    if (_localPath == nil)
-//    {
-//        NSString *imageCachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-//        NSString *fileName = [imageUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"_"];
-//        fileName = [fileName stringByReplacingOccurrencesOfString:@":" withString:@"_"];
-//        fileName = [fileName stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
-//        _localPath = [imageCachePath stringByAppendingPathComponent:fileName];
-//    }
+    //    if (_localPath == nil)
+    //    {
+    //        NSString *imageCachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    //        NSString *fileName = [imageUrl stringByReplacingOccurrencesOfString:@"\\" withString:@"_"];
+    //        fileName = [fileName stringByReplacingOccurrencesOfString:@":" withString:@"_"];
+    //        fileName = [fileName stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    //        _localPath = [imageCachePath stringByAppendingPathComponent:fileName];
+    //    }
     return [self urlToLocalPath:imageUrl];
 }
 
 - (id)init
 {
-	if (self = [super init])
+    if (self = [super init])
     {
-		[self setup];
-	}
-	return self;
+        [self setup];
+    }
+    return self;
 }
 
 - (id)initWithFrame:(CGRect)frame
 {
-	if (self = [super initWithFrame:frame])
+    if (self = [super initWithFrame:frame])
     {
-		[self setup];
-	}
-	return self;
+        [self setup];
+    }
+    return self;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-	if (self = [super initWithCoder:aDecoder])
+    if (self = [super initWithCoder:aDecoder])
     {
-		[self setup];
-	}
-	return self;
+        [self setup];
+    }
+    return self;
 }
 
 - (void)setDefaultImage:(UIImage *)defaultImage
@@ -128,10 +128,6 @@ static NSMutableDictionary *imageDataDic;
     if (imageCacheDic == nil)
     {
         imageCacheDic = [[NSMutableDictionary alloc] init];
-    }
-    if (downingImageUrls == nil)
-    {
-        downingImageUrls = [[NSMutableArray alloc] init];
     }
     if (imageDataDic == nil)
     {
@@ -235,8 +231,8 @@ static NSMutableDictionary *imageDataDic;
                         [imageData writeToFile:self.localPath atomically:YES];
                     }
                 }
-               
-                    
+                
+                
             }
         }
         @catch (NSException *exception) {
@@ -260,7 +256,7 @@ static NSMutableDictionary *imageDataDic;
             self.image =img;
         });
     }
-
+    
 }
 
 - (void)userProfileImageChange:(NSNotification *)note
@@ -281,11 +277,11 @@ static NSMutableDictionary *imageDataDic;
                 @synchronized(imageCacheDic)
                 {
                     [imageCacheDic setObject:self.image forKey:imageUrl];
-//                    if (isSaveToCacheFolder)
-//                    {
-//                        NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(self.image,1)];
-//                        [imageData writeToFile:self.localPath atomically:YES];
-//                    }
+                    //                    if (isSaveToCacheFolder)
+                    //                    {
+                    //                        NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(self.image,1)];
+                    //                        [imageData writeToFile:self.localPath atomically:YES];
+                    //                    }
                     
                 }
             }
@@ -319,8 +315,8 @@ static NSMutableDictionary *imageDataDic;
     }
     self.image = _defaultImage;
     [self.spinner stopAnimating];
-
-
+    
+    
     @try {
         @synchronized(imageCacheDic)
         {
@@ -401,22 +397,22 @@ static NSMutableDictionary *imageDataDic;
     {
         [self.delegate downloadProgress:0];
     }
-    if (![downingImageUrls containsObject:url])
+    if (![[imageDataDic allKeys] containsObject:url])
     {
         NSURL *netUrl = [[NSURL alloc] initWithString:url];
         NSURLRequest* request = [NSURLRequest requestWithURL:netUrl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.0];
         NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
         if (conn)
         {
-            @try {
-                @synchronized(downingImageUrls)
-                {
-                    [downingImageUrls addObject:url];
-                }
-            }
-            @catch (NSException *exception) {
-                NSLog(@"downingImageUrl : %@",exception);
-            }
+            //            @try {
+            //                @synchronized(downingImageUrls)
+            //                {
+            //                    [downingImageUrls addObject:url];
+            //                }
+            //            }
+            //            @catch (NSException *exception) {
+            //                NSLog(@"downingImageUrl : %@",exception);
+            //            }
             [conn start];//开始连接网络
         }
     }
@@ -459,7 +455,7 @@ static NSMutableDictionary *imageDataDic;
             {
                 self.image = image;
                 NSLog(@"imageUrl %@:",imageUrl);
-
+                
             }
             else
             {
@@ -497,7 +493,7 @@ static NSMutableDictionary *imageDataDic;
     
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     NSURLRequest* request = [connection currentRequest];
-
+    
     @try {
         @synchronized(imageDataDic)
         {
@@ -517,9 +513,13 @@ static NSMutableDictionary *imageDataDic;
     else
     {
         @try {
-            @synchronized(downingImageUrls)
+            //            @synchronized(downingImageUrls)
+            //            {
+            //                [downingImageUrls removeObject:[request.URL absoluteString]];
+            //            }
+            @synchronized(imageDataDic)
             {
-                [downingImageUrls removeObject:[request.URL absoluteString]];
+                [imageDataDic removeObjectForKey:[request.URL absoluteString]];
             }
         }
         @catch (NSException *exception) {
@@ -545,14 +545,14 @@ static NSMutableDictionary *imageDataDic;
     {
         [self.delegate downloadProgress:(progress * 100)];
     }
-
+    
 }
 //数据接收完成
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSURLRequest* request = [connection currentRequest];
     NSMutableData *data = [imageDataDic objectForKey:[request.URL absoluteString]];
-
+    
     dispatch_queue_t queue=dispatch_queue_create("downLaodSucceed", NULL);
     dispatch_async(queue, ^{
         UIImage *image = [UIImage imageWithData:data];;
@@ -579,18 +579,18 @@ static NSMutableDictionary *imageDataDic;
         }
         
         NSLog(@"downLaodSucceed:image downUrl : %@",[request.URL absoluteString]);
-
+        
         [self downLaodSucceed:image downUrl:[request.URL absoluteString]];
-
+        
     });
     
     
     
     @try {
-        @synchronized(downingImageUrls)
-        {
-            [downingImageUrls removeObject:[request.URL absoluteString]];
-        }
+        //        @synchronized(downingImageUrls)
+        //        {
+        //            [downingImageUrls removeObject:[request.URL absoluteString]];
+        //        }
         @synchronized(imageDataDic)
         {
             [imageDataDic removeObjectForKey:[request.URL absoluteString]];
@@ -599,7 +599,7 @@ static NSMutableDictionary *imageDataDic;
     @catch (NSException *exception) {
         NSLog(@"downingImageUrl : %@",exception);
     }
-
+    
     
     
 }
@@ -611,26 +611,30 @@ static NSMutableDictionary *imageDataDic;
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.spinner stopAnimating];
-
-
+        
+        
         if (_defaultImage)
         {
             self.image  = _defaultImage;
         }
     });
     NSURLRequest* request = [connection currentRequest];
-
+    
     @try {
-        @synchronized(downingImageUrls)
+        //        @synchronized(downingImageUrls)
+        //        {
+        //            [downingImageUrls removeObject:[request.URL absoluteString]];
+        //        }
+        @synchronized(imageDataDic)
         {
-            [downingImageUrls removeObject:[request.URL absoluteString]];
+            [imageDataDic removeObjectForKey:[request.URL absoluteString]];
         }
     }
     @catch (NSException *exception) {
         NSLog(@"downingImageUrl : %@",exception);
     }
     NSLog(@"下载失败2，%@",[request.URL absoluteString]);
-
+    
 }
 
 
