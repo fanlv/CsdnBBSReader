@@ -24,6 +24,7 @@
     NSString *errorCode;
     UIImage *captchaImg;
     NSString *captchaUrl;
+    NSString *authenticity_token;
 
 }
 
@@ -311,6 +312,7 @@
             [vc setTopicId:topicId];
             vc.captchaImg = captchaImg;
             vc.captchaUrl = captchaUrl;
+            vc.authenticity_token = authenticity_token;
             
 //            NSLog(@"%@",captchaUrl);
 
@@ -414,6 +416,20 @@
         replyLisMutableArray = [[NSMutableArray alloc] init];
         authorReplyLisMutableArray = [[NSMutableArray alloc] init];
     }
+    
+    HTMLNode *headNode = [parser head];
+    NSArray *metaNodes = [headNode findChildTags:@"meta"];
+    
+    for (HTMLNode *node in metaNodes)
+    {
+        NSString *name = [node getAttributeNamed:@"name"];
+        if ([[name lowercaseString] isEqualToString:@"csrf-token"])
+        {
+            authenticity_token = [node getAttributeNamed:@"content"];
+        }
+    }
+    
+    
     
     HTMLNode *bodyNode = [parser body];
     HTMLNode *wraper = [bodyNode findChildOfClass:@"wraper"];

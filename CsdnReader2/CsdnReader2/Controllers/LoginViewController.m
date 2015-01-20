@@ -72,7 +72,8 @@
     [feedBackBtn addTarget:self action:@selector(feedBackBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:feedBackBtn];
     
-    
+    userName.text = @"fanlvlgh";
+    password.text = @"a123456";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginsucceed:)
                                                  name:USER_LOGIN_SUCCEED object:nil];

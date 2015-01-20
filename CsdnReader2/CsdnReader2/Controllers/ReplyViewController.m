@@ -135,6 +135,7 @@
     }
 
     [requestForm setPostValue:@"提交回复" forKey:@"commit"];
+    [requestForm setPostValue:self.authenticity_token forKey:@"authenticity_token"];
     [requestForm setPostValue:replyTextView.text forKey:@"post[body]"];
     [requestForm startAsynchronous];
 }

@@ -81,7 +81,7 @@ _Pragma("clang diagnostic pop") \
     self = [self initWith:del url:strUrl what:101];
     if (self) {
         doneAction = selector;
-        cookieArray = cookie;
+//        cookieArray = cookie;
     }
     return self;
 }
