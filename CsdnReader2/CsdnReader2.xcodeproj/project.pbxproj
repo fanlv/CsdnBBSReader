@@ -973,7 +973,7 @@
 				TargetAttributes = {
 					69F7CCE119ECAC42003D4CA2 = {
 						CreatedOnToolsVersion = 6.0.1;
-						DevelopmentTeam = K79R9GFX47;
+						DevelopmentTeam = KW288R5J73;
 					};
 					69F7CCFA19ECAC42003D4CA2 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -1237,7 +1237,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Lv Fan (77C7U8VYSV)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jing Yang (KEPL6DZH42)";
+				DEVELOPMENT_TEAM = KW288R5J73;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CsdnReader2/CsdnReader2-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1249,7 +1250,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "de173f85-72b8-40ab-b6e8-c3b6bc1dad66";
+				PROVISIONING_PROFILE = "2343eec7-0422-40fc-b52e-6da60c086f96";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development *";
 			};
 			name = Debug;
 		};
@@ -1258,6 +1260,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEVELOPMENT_TEAM = KW288R5J73;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CsdnReader2/CsdnReader2-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1269,7 +1272,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d2cde4b5-3c37-490e-801c-3fbbfc7ed40d";
+				PROVISIONING_PROFILE = "2343eec7-0422-40fc-b52e-6da60c086f96";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development *";
 			};
 			name = Release;
 		};
